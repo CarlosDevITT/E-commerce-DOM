@@ -1,0 +1,21 @@
+{
+  "name": "ECOMMERCE DOM",
+  "short_name": "ECOMMERCE",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#312e81",
+  "description": "E-commerce modular, mobile-first, com IA e PWA.",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

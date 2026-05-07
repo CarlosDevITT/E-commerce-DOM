@@ -1,341 +1,439 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="shortcut icon" href="assets/CarlosDomingos93.gpg" type="image/x-icon">
-        <link rel="manifest" href="manifest.json">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-        <!--========== BOX ICONS ==========-->
-        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+<html lang="pt-BR">
 
-        <!--========== CSS ==========-->
-        <link defer rel="stylesheet" href="./cart/estilo.css">
-        <link defer rel="stylesheet" href="styles.css">  
-        <link defer rel="stylesheet" href="./css/style.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DOM - O melhor e-commerce do Brasil. Produtos com qualidade e preço justo.">
+  <meta name="theme-color" content="#020617">
 
-        <title> DOM SHOP</title>
-    </head>
-    <body>
-            <div class="wrapper">
-                    <div class="iten iten1">Fretes grátis na primeira compra </div>
-                    <div class="iten iten2">Fretes grátis na primeira compra </div>
-                    <div class="iten iten3">Fretes grátis na primeira compra </div>
-                    <div class="iten iten4">Fretes grátis na primeira compra </div>
-                    <div class="iten iten5">Fretes grátis na primeira compra </div>
-                    <div class="iten iten6">Fretes grátis na primeira compra </div>
-                    <div class="iten iten7">Fretes grátis na primeira compra </div>
-                    <div class="iten iten8">Fretes grátis na primeira compra </div>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/icons/icon-192.png">
+
+  <!-- ÚNICO CSS DO SITE - ordem importa -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="styles/app.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>DOM - E-commerce</title>
+</head>
+
+<body>
+
+  <!-- ===================== HEADER DESKTOP===================== -->
+  <header class="site-header" id="main-header">
+    <div class="header-inner">
+
+      <!-- [MOBILE ONLY] Botão Hamburguer -->
+      <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+
+      <!-- Logo -->
+      <a href="/" class="site-logo" aria-label="DOM Home">
+        <div class="logo-container">
+          <img src="logo.jpg" alt="DOM Logo" class="logo-img">
+          <span class="logo-wordmark">DOM</span>
+        </div>
+      </a>
+
+      <!-- [DESKTOP ONLY] Nav Categorias -->
+      <nav class="header-nav" aria-label="Categorias">
+        <ul>
+          <li><a href="#" onclick="dom.filterCategory(''); return false;">Início</a></li>
+          <li class="has-dropdown">
+            <a href="#" onclick="return false;">Categorias <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="3">
+                <path d="m6 9 6 6 6-6" />
+              </svg></a>
+            <ul class="dropdown" id="desktop-categories-dropdown">
+              <!-- Categorias injetadas via JS -->
+            </ul>
+          </li>
+          <li><a href="#" onclick="return false;">Ofertas</a></li>
+        </ul>
+      </nav>
+
+      <!-- Barra de Busca (aparece em todas as telas) -->
+      <div class="header-search">
+        <div class="search-field">
+          <input type="text" id="search-input" placeholder="Buscar produtos..." autocomplete="off" aria-label="Buscar">
+          <button aria-label="Pesquisar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ações: Conta + Carrinho -->
+      <div class="header-actions">
+        <!-- [DESKTOP ONLY] Ícone de Conta -->
+        <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.openProfile()">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </button>
+        <!-- Carrinho (visível em TODAS as telas) -->
+        <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="8" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+          </svg>
+          <span class="h-cart-badge" id="cart-count-header">0</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ===================== SIDEBAR MOBILE ===================== -->
+  <div class="sidebar-overlay" id="mobile-overlay"></div>
+  <aside class="sidebar-menu" id="mobile-sidebar">
+    <div class="sidebar-top">
+      <div class="logo-container">
+        <img src="logo.jpg" alt="DOM Logo" class="logo-img">
+        <span class="logo-wordmark">DOM</span>
+      </div>
+      <button class="h-icon-btn" id="close-menu-btn" aria-label="Fechar menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="#"
+            onclick="dom.filterCategory(''); document.getElementById('close-menu-btn').click(); return false;">🏠
+            Início</a></li>
+        <li class="sidebar-section-title">Categorias</li>
+        <div id="mobile-categories-list">
+          <!-- Categorias injetadas via JS -->
+        </div>
+        <li><a href="#" onclick="return false;">🏷️ Ofertas do Dia</a></li>
+        <li><a href="#" onclick="return false;">👤 Minha Conta</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- ===================== MAIN CONTENT ===================== -->
+  <main id="main-content">
+
+    <!-- Banner -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <span class="hero-badge">Novidades da Semana</span>
+        <h1>Tecnologia que <span class="highlight">Conecta</span></h1>
+        <p>Explore a nova linha de periféricos e acessórios premium com até 30% OFF.</p>
+        <div class="hero-actions">
+          <a href="#products" class="btn-primary">Ver Ofertas</a>
+          <a href="#" class="btn-outline">Saiba Mais</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grid de Produtos -->
+    <section id="products" class="products-section">
+      <div class="products-toolbar">
+        <h2 id="products-title">Produtos</h2>
+        <select id="sort" aria-label="Ordenar por">
+          <option value="popular">Mais vendidos</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+        </select>
+      </div>
+      <div id="products-list" class="products-grid">
+        <!-- Produtos injetados via JS -->
+        <div class="products-loading">
+          <div class="spinner"></div>
+          <p>Carregando produtos...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== CARRINHO SIDEBAR PREMIUM ===================== -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+
+  <aside id="cart-sidebar" class="ecom-cart-sidebar">
+
+    <!-- Header do Carrinho -->
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap">
+          <img src="logo.jpg" alt="DOM" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+        </div>
+        <div>
+          <p class="ecom-cart-head-label">Meu Carrinho</p>
+          <p class="ecom-cart-head-store">DOM Eletrônicos</p>
+        </div>
+      </div>
+      <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Área Rolável -->
+    <div class="ecom-cart-body">
+
+      <!-- Banner Frete Grátis -->
+      <div class="ecom-cart-frete-banner">
+        <i class="fas fa-truck-fast"></i>
+        <span>Frete grátis para compras acima de <strong>R$ 299</strong></span>
+      </div>
+
+      <!-- Título + Limpar -->
+      <div class="ecom-cart-items-head">
+        <div class="ecom-cart-items-title">
+          <i class="fas fa-shopping-cart"></i>
+          <h3>Seus produtos</h3>
+        </div>
+        <button id="cart-clear-btn" class="ecom-cart-clear-btn">
+          <i class="fas fa-trash-alt"></i> Limpar
+        </button>
+      </div>
+
+      <!-- Itens (injetados via JS) -->
+      <div id="cart-items" class="ecom-cart-items"></div>
+
+      <!-- Continuar Comprando -->
+      <div class="ecom-cart-continue">
+        <button onclick="document.getElementById('close-cart').click()">
+          <i class="fas fa-plus-circle"></i> Adicionar mais produtos
+        </button>
+      </div>
+
+      <!-- ══ Tipo de Entrega ══ -->
+      <div class="ecom-section-card">
+        <div class="ecom-section-title">
+          <span class="ecom-section-icon"><i class="fas fa-shipping-fast"></i></span>
+          <span>Tipo de Entrega</span>
+        </div>
+        <div class="ecom-delivery-options" id="order-type-options">
+
+          <label class="ecom-option" id="type-delivery">
+            <input type="radio" name="order_type" value="delivery" class="cart-type-radio" checked>
+            <span class="ecom-option-icon delivery"><i class="fas fa-truck"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Entrega em casa</span>
+              <span class="ecom-option-sub">Receba no endereço cadastrado</span>
             </div>
-       
-        <!--========== SCROLL TOP ==========-->
-        <a href="#" class="scrolltop" id="scroll-top">
-            <i class='bx bx-chevron-up scrolltop__icon'></i>
-        </a>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
 
-        <!--========== HEADER ==========-->
-        <header class="l-header" id="header">
-            <nav class="nav bd-container">
-                <a href="#" class="nav__logo">DOM<a>
-
-                <div class="nav__menu" id="nav-menu">
-                    <ul class="nav__list">
-                        <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
-                        <li class="nav__item"><a href="./shop/index.html" class="nav__link">Loja</a></li>
-                        <li class="nav__item"><a href="#services" class="nav__link">Promoção</a></li>
-                        <li class="nav__item"><a href="#menu" class="nav__link">Produtos</a></li>
-                        <li class="nav__item"><a href="#contact" class="nav__link">Contato</a></li>
-
-                        <li><i class='bx bx-moon change-theme' id="theme-button"></i></li>
-                    </ul>
-                </div>
-
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class='bx bx-menu'></i>
-                </div>
-
-            
-                
-            </nav>
-        </header>
-
-        <main class="l-main">
-            <!--========== HOME ==========-->
-            <section class="contenedor-seccion">
-                    <video class="fondo-seccion" autoplay muted loop>
-                        <source src="small.mp4" type="video/mp4">
-                    </video>
-                    
-                    <section id="inicio" class="inicio">
-                        <div class="col">
-                            <h2 class="titulo-inicio">Encontre as tecnologias <br>
-                                que você procura pelo melhor preço</h2>
-                            <div class="buscador">
-                                <input type="text" placeholder="O que você está procurando?">
-                                <span class="btn-buscar"><i class="fa-solid fa-magnifying-glass"></i></span>
-                            </div>
-                        </div>
-                      
-                    </section>
-            </section>
-            <!--========== SERVICES ==========-->
-            <section class="services section bd-container" id="services">
-
-                    <span class="section-subtitle">Free Grátis na primeira compra !</span>
-                    <h2 class="section-title">Produto de Qualidade</h2>
-    
-                    <section class="container">
-                            <!-- Container de elementos -->
-                            <div class="container-itens">
-                                <div class="item">
-                                    <span class="titulo-item">Caixa Engasse</span>
-                                    <img src="./cart/img/boxengasse.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$15.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Rosa Inglesa</span>
-                                    <img src="./cart/img/englishrose.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$25.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Batida Nap</span>
-                                    <img src="./cart/img/knocknap.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$35.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">A Noite</span>
-                                    <img src="./cart/img/lanight.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$18.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Tudo Prata</span>
-                                    <img src="./cart/img/silverall.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$32.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Glamour de Pele</span>
-                                    <img src="img/skinglam.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$18.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Midimix</span>
-                                    <img src="./cart/img/midimix.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$54.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Senhor Azul</span>
-                                    <img src="./cart/img/sirblue.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$32.000</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                                <div class="item">
-                                    <span class="titulo-item">Aço Médio</span>
-                                    <img src="./cart/img/middlesteel.png" alt="" class="imagem-item">
-                                    <span class="preco-item">R$42.800</span>
-                                    <button class="botao-item">Adicionar ao Carrinho</button>
-                                </div>
-                            </div>
-                            <!-- Carrinho de Compras -->
-                            <div class="carrinho" id="carrinho">
-                                <div class="cabecalho-carrinho">
-                                    <h2>Seu Carrinho</h2>
-                                </div>
-                    
-                                <div class="carrinho-itens">
-                                    <!-- 
-                                    <div class="carrinho-item">
-                                        <img src="img/boxengasse.png" width="80px" alt="">
-                                        <div class="carrinho-item-detalhes">
-                                            <span class="carrinho-item-titulo">Caixa Engasse</span>
-                                            <div class="seletor-quantidade">
-                                                <i class="fa-solid fa-minus diminuir-quantidade"></i>
-                                                <input type="text" value="1" class="carrinho-item-quantidade" disabled>
-                                                <i class="fa-solid fa-plus aumentar-quantidade"></i>
-                                            </div>
-                                            <span class="carrinho-item-preco">R$15.000,00</span>
-                                        </div>
-                                       <span class="btn-excluir">
-                                            <i class="fa-solid fa-trash"></i>
-                                       </span>
-                                    </div>
-                                    <div class="carrinho-item">
-                                        <img src="./cart/img/skinglam.png" width="80px" alt="">
-                                        <div class="carrinho-item-detalhes">
-                                            <span class="carrinho-item-titulo">Glamour de Pele</span>
-                                            <div class="seletor-quantidade">
-                                                <i class="fa-solid fa-minus diminuir-quantidade"></i>
-                                                <input type="text" value="3" class="carrinho-item-quantidade" disabled>
-                                                <i class="fa-solid fa-plus aumentar-quantidade"></i>
-                                            </div>
-                                            <span class="carrinho-item-preco">R$18.000,00</span>
-                                        </div>
-                                       <button class="btn-excluir">
-                                            <i class="fa-solid fa-trash"></i>
-                                       </button>
-                                    </div>
-                                     -->
-                                </div>
-                                <div class="carrinho-total">
-                                    <div class="linha">
-                                        <strong>Seu Total</strong>
-                                        <span class="carrinho-preco-total">
-                                            R$120.000,00
-                                        </span>
-                                    </div>
-                                    <button class="btn-pagar">Pagar <i class="fa-solid fa-bag-shopping"></i> </button>
-                                </div>
-                            </div>
-                    </section>
-                      
-            </section>
-
-            <!--========== MENU ==========-->
-            <section class="menu section bd-container" id="menu">
-                <span class="section-subtitle">Ofertas Especial</span>
-                <h2 class="section-title">Casa Inteligente</h2>
-
-                <section class="container">
-                        <!-- Container de elementos -->
-                        <div class="container-itens">
-                            <div class="item">
-                                <span class="titulo-item">Caixa Engasse</span>
-                                <img src="./cart/img/boxengasse.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$15.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Rosa Inglesa</span>
-                                <img src="./cart/img/englishrose.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$25.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Batida Nap</span>
-                                <img src="./cart/img/knocknap.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$35.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">A Noite</span>
-                                <img src="./cart/img/lanight.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$18.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Tudo Prata</span>
-                                <img src="./cart/img/silverall.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$32.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Glamour de Pele</span>
-                                <img src="img/skinglam.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$18.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Midimix</span>
-                                <img src="./cart/img/midimix.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$54.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Senhor Azul</span>
-                                <img src="./cart/img/sirblue.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$32.000</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                            <div class="item">
-                                <span class="titulo-item">Aço Médio</span>
-                                <img src="./cart/img/middlesteel.png" alt="" class="imagem-item">
-                                <span class="preco-item">R$42.800</span>
-                                <button class="botao-item">Adicionar ao Carrinho</button>
-                            </div>
-                        </div>
-                </section>
-            </section>
-
-            
-        </main>
-
-        <!--========== CONTACT US ==========-->
-        <section class="contact section bd-container" id="contact">
-            <div class="contact__container bd-grid">
-                <div class="contact__data">
-                    <span class="section-subtitle contact__initial">Vamos conversar </span>
-                    <h2 class="section-title contact__initial">Contate-nos</h2>
-                    <p class="contact__description">Se você deseja ter um fornecedor, entre em contato conosco e atenderemos você rapidamente, com nosso atendimento por chat 24 horas por dia, 7 dias por semana.</p>
-                </div>
-
-                <div class="contact__button">
-                    <a href="https://wa.me/p/9150303315061573/559285130951" class="button">Entre em contato agora!</a>
-                </div>
+          <label class="ecom-option" id="type-retirada">
+            <input type="radio" name="order_type" value="retirada" class="cart-type-radio">
+            <span class="ecom-option-icon retirada"><i class="fas fa-store"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Retirar na loja</span>
+              <span class="ecom-option-sub">Disponível em até 2h</span>
             </div>
-        </section>
-        <!--========== FOOTER ==========-->
-        <footer class="footer section bd-container">
-            <div class="footer__container bd-grid">
-                <div class="footer__content">
-                    <a href="#" class="footer__logo">Dom<ga>
-                    <span class="footer__description">Shop</span>
-                    <div>
-                        <a href="https://carlosdevitt.github.io/Carlos_Domingos/"class="footer__social"><i class='bx bxl-facebook'></i></a>
-                        <a href="https://carlosdevitt.github.io/Carlos_Domingos/" class="footer__social"><i class='bx bxl-instagram'></i></a>
-                        <a href="https://carlosdevitt.github.io/Carlos_Domingos/" class="footer__social"><i class='bx bxl-twitter'></i></a>
-                    </div>
-                </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
 
-                <div class="footer__content">
-                    <h3 class="footer__title">Services</h3>
-                    <ul>
-                        <li><a href="https://wa.me/p/9150303315061573/559285130951" class="footer__link">Delivery</a></li>
-                        <li><a href="https://state-software.vercel.app/#services" class="footer__link">Planos</a></li>
-                        <li><a href="https://state-software.vercel.app/#team" class="footer__link">Desevolvedores</a></li>
-                        <li><a href="https://state-software.vercel.app/#prices" class="footer__link">Automação</a></li>
-                    </ul>
-                </div>
+        </div>
 
-                <div class="footer__content">
-                    <h3 class="footer__title">Informação</h3>
-                    <ul>
-                        <li><a href="https://state-software.vercel.app/#" class="footer__link">Site</a></li>
-                        <li><a href="https://wa.me/p/9150303315061573/559285130951" class="footer__link">Contato</a></li>
-                        <li><a href="https://docs.google.com/document/d/1lYDogyU-0nLAg99iw3zlLtdNu1wYeun-dQEL3ihnII0/edit?usp=sharing" class="footer__link">Privacy policy</a></li>
-                        <li><a href="https://docs.google.com/document/d/1lYDogyU-0nLAg99iw3zlLtdNu1wYeun-dQEL3ihnII0/edit?usp=sharing" class="footer__link">Terms of services</a></li>
-                    </ul>
-                </div>
+        <!-- Campo CEP (só para entrega) -->
+        <div class="ecom-cep-row" id="cep-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <input type="text" id="cep-input" placeholder="Digite seu CEP para calcular o frete" maxlength="9">
+          <button id="cep-btn"><i class="fas fa-search"></i></button>
+        </div>
+        <p class="ecom-cep-result" id="cep-result"></p>
+      </div>
 
-                <div class="footer__content">
-                    <h3 class="footer__title">Endereço</h3>
-                    <ul>
-                        <li>Manaus - Am</li>
-                        <li>Rua maritiba Nº04</li>
-                        <li>+55 92 98513-0951</li>
-                        <li>CarlosDomingos93@gmail.com</li>
-                    </ul>
-                </div>
+      <!-- ══ Forma de Pagamento ══ -->
+      <div class="ecom-section-card">
+        <div class="ecom-section-title">
+          <span class="ecom-section-icon"><i class="fas fa-wallet"></i></span>
+          <span>Forma de Pagamento</span>
+        </div>
+        <div class="ecom-delivery-options" id="payment-options">
+
+          <label class="ecom-option" id="opt-credit">
+            <input type="radio" name="payment_method" value="credit" class="cart-payment-radio" checked>
+            <span class="ecom-option-icon credit"><i class="fas fa-credit-card"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Cartão de Crédito</span>
+              <span class="ecom-option-sub">Visa, Master, Elo — até 12x</span>
             </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
 
-          <p class="footer__copy">&#169; All right reserved</p>
-        </footer>
+          <label class="ecom-option" id="opt-debit">
+            <input type="radio" name="payment_method" value="debit" class="cart-payment-radio">
+            <span class="ecom-option-icon debit"><i class="fas fa-money-check-alt"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Cartão de Débito</span>
+              <span class="ecom-option-sub">Débito na hora</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
 
-       
-        <!--========== SCROLL REVEAL ==========-->
-        <script src="https://unpkg.com/scrollreveal"></script>
+          <label class="ecom-option" id="opt-pix">
+            <input type="radio" name="payment_method" value="pix" class="cart-payment-radio">
+            <span class="ecom-option-icon pix"><i class="fas fa-qrcode"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">PIX</span>
+              <span class="ecom-option-sub">Aprovação instantânea · 5% off</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
 
-        <!--========== MAIN JS ==========-->
-        <script src="main.js"></script>
-        <script src="./cart/app.js"></script>
-               
-    </body>
+          <label class="ecom-option" id="opt-cash">
+            <input type="radio" name="payment_method" value="cash" class="cart-payment-radio">
+            <span class="ecom-option-icon cash"><i class="fas fa-money-bill-wave"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Dinheiro</span>
+              <span class="ecom-option-sub">Pague na entrega / retirada</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
+
+          <!-- Troco (só aparece para Dinheiro) -->
+          <div class="ecom-troco hidden" id="change-row">
+            <i class="fas fa-coins"></i>
+            <div class="ecom-troco-info">
+              <p>Precisa de troco?</p>
+              <div class="ecom-troco-btns">
+                <button type="button" class="ecom-troco-btn active" id="change-yes">Sim</button>
+                <button type="button" class="ecom-troco-btn" id="change-no">Não</button>
+              </div>
+              <div class="ecom-troco-amount" id="change-amount-row">
+                <span>R$</span>
+                <input type="number" id="change-amount" placeholder="0,00" min="0" step="0.01" inputmode="decimal">
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══ Resumo de Valores ══ -->
+      <div class="ecom-totals-card">
+        <div class="ecom-totals-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal-val">R$ 0,00</span>
+        </div>
+        <div class="ecom-totals-row" id="cart-delivery-row">
+          <span>Frete</span>
+          <span id="delivery-fee-val" class="ecom-frete-badge">A calcular</span>
+        </div>
+        <div class="ecom-totals-row" id="delivery-time-row">
+          <span><i class="far fa-clock"></i> Prazo estimado</span>
+          <span id="delivery-time-val">—</span>
+        </div>
+        <div class="ecom-totals-divider"></div>
+        <div class="ecom-totals-row ecom-totals-final">
+          <span>Total</span>
+          <span id="cart-total-val">R$ 0,00</span>
+        </div>
+        <p class="ecom-parcel-hint" id="parcel-hint"></p>
+      </div>
+
+      <!-- Campos ocultos (compatibilidade JS) -->
+      <div class="hidden">
+        <textarea id="delivery-address"></textarea>
+        <input type="tel" id="delivery-phone">
+      </div>
+
+    </div><!-- fim .ecom-cart-body -->
+
+    <!-- Rodapé Fixo: Finalizar -->
+    <div class="ecom-cart-footer">
+      <button id="checkout-button" class="ecom-checkout-btn" disabled>
+        <i class="fas fa-lock"></i>
+        <span>Carrinho vazio</span>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ===================== BOTTOM NAVIGATION (MOBILE ONLY) ===================== -->
+  <nav class="mobile-bottom-nav">
+    <a href="#" class="nav-item active" onclick="dom.filterCategory(''); return false;">
+      <i class="fas fa-home"></i>
+      <span>Início</span>
+    </a>
+    <a href="#" class="nav-item" onclick="dom.openOrders(); return false;">
+      <i class="fas fa-shopping-bag"></i>
+      <span>Pedidos</span>
+    </a>
+    <a href="#" class="nav-item" onclick="dom.openChat(); return false;">
+      <i class="fas fa-comments"></i>
+      <span>Chat</span>
+    </a>
+    <a href="#" class="nav-item" onclick="dom.openProfile(); return false;">
+      <i class="fas fa-user"></i>
+      <span>Perfil</span>
+    </a>
+  </nav>
+
+  <!-- ===================== MODAIS ADICIONAIS ===================== -->
+  <!-- Chat Widget -->
+  <div id="chat-widget" class="chat-widget hidden"></div>
+
+  <!-- Perfil / Login Modal -->
+  <div id="profile-overlay" class="cart-overlay"></div>
+  <aside id="profile-sidebar" class="ecom-cart-sidebar profile-sidebar">
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap"><i class="fas fa-user-circle"></i></div>
+        <div>
+          <p class="ecom-cart-head-label">Minha Conta</p>
+          <p class="ecom-cart-head-store" id="user-display-name">Visitante</p>
+        </div>
+      </div>
+      <button onclick="dom.closeProfile()" class="h-icon-btn cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ecom-cart-body" id="profile-content">
+      <!-- Conteúdo do Perfil injetado via JS -->
+    </div>
+  </aside>
+
+  <!-- Pedidos Modal -->
+  <div id="orders-overlay" class="cart-overlay"></div>
+  <aside id="orders-sidebar" class="ecom-cart-sidebar orders-sidebar">
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap"><i class="fas fa-shopping-bag"></i></div>
+        <div>
+          <p class="ecom-cart-head-label">Meus Pedidos</p>
+          <p class="ecom-cart-head-store">Histórico de compras</p>
+        </div>
+      </div>
+      <button onclick="dom.closeOrders()" class="h-icon-btn cart-close-btn"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="ecom-cart-body" id="orders-content">
+      <div class="cart-empty">
+        <i class="fas fa-history" style="font-size:40px;margin-bottom:12px;display:block"></i>
+        <p>Você ainda não tem pedidos</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <!-- Supabase CDN (carregado ANTES do app) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Config do Supabase -->
+  <script src="src/config/supabase.js"></script>
+  <!-- Header e interações UI -->
+  <script src="src/header.js"></script>
+  <!-- App principal como módulo ES6 -->
+  <script type="module" src="src/app.js"></script>
+
+</body>
+
 </html>
