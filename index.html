@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DOM - Lingerie Premium. Moda, qualidade e conforto. Frete grátis acima de R$ 299.">
+  <meta name="description" content="DOM - E-commerce de Eletrônicos Premium. Tecnologia, qualidade e preço justo.">
   <meta name="theme-color" content="#020617">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,7 +21,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- CSS Global -->
+  <!-- CSS -->
 
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/components/sidebar.css">
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="styles/main-cart.css">
   <link rel="stylesheet" href="styles/components/chat.css">
 
-  <title>DOM - Lingerie Premium</title>
+  <title>DOM - Eletrônicos Premium</title>
 </head>
 
 <body>
@@ -40,7 +40,7 @@
     <div class="header-inner">
 
 ```
-  <!-- Botão Menu Hamburger (Mobile) -->
+  <!-- Menu Hamburger (Mobile) -->
   <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <line x1="4" x2="20" y1="6" y2="6" />
@@ -52,15 +52,15 @@
   <!-- Logo -->
   <a href="#" class="site-logo" onclick="dom.route('home'); return false;" aria-label="DOM Home">
     <div class="logo-container">
-      <img src="assets/logo.svg" alt="DOM Logo" class="logo-img" onerror="this.style.display='none'">
+      <i class="fas fa-microchip"></i>
       <span class="logo-wordmark">DOM</span>
     </div>
   </a>
 
-  <!-- Barra de Busca -->
+  <!-- Busca -->
   <div class="header-search">
     <div class="search-field">
-      <input type="text" id="search-input" placeholder="Buscar productos..." autocomplete="off" aria-label="Buscar">
+      <input type="text" id="search-input" placeholder="Buscar eletrônicos..." autocomplete="off" aria-label="Buscar">
       <button aria-label="Pesquisar">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <circle cx="11" cy="11" r="8" />
@@ -70,19 +70,19 @@
     </div>
   </div>
 
-  <!-- Ações Header -->
+  <!-- Ações -->
   <div class="header-actions">
     <!-- Notificações -->
-    <button class="h-icon-btn notification-btn" aria-label="Notificações" title="Notificações">
+    <button class="h-icon-btn notification-btn" aria-label="Notificações">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
         <path d="M13.73 21a2 2 0 0 1-3.46 0" />
       </svg>
-      <span class="notification-badge">2</span>
+      <span class="notification-badge">1</span>
     </button>
 
-    <!-- Conta/Perfil -->
-    <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.route('profile'); return false;" title="Perfil">
+    <!-- Perfil -->
+    <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.route('profile'); return false;">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
         <circle cx="12" cy="7" r="4" />
@@ -90,7 +90,7 @@
     </button>
 
     <!-- Carrinho -->
-    <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho" title="Ver carrinho">
+    <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="8" cy="21" r="1" />
         <circle cx="19" cy="21" r="1" />
@@ -102,15 +102,14 @@
 
 </div>
 
-<!-- Desktop Navigation -->
+<!-- Desktop Nav -->
 <nav class="header-nav-desktop" aria-label="Navegação">
   <ul>
     <li><a href="#" onclick="dom.route('home'); return false;">Início</a></li>
-    <li><a href="#" onclick="dom.filterCategory('new'); return false;">Novidades</a></li>
-    <li><a href="#" onclick="dom.filterCategory('sale'); return false;">🔥 Em Promoção</a></li>
-    <li><a href="#" onclick="dom.filterCategory('bestseller'); return false;">Mais Vendidos</a></li>
-    <li><a href="#" onclick="dom.route('about'); return false;">Sobre</a></li>
-    <li><a href="#" onclick="dom.route('contact'); return false;">Contato</a></li>
+    <li><a href="#" onclick="dom.filterCategory('notebooks'); return false;">Notebooks</a></li>
+    <li><a href="#" onclick="dom.filterCategory('smartphones'); return false;">Smartphones</a></li>
+    <li><a href="#" onclick="dom.filterCategory('acessorios'); return false;">Acessórios</a></li>
+    <li><a href="#" onclick="dom.filterCategory('sale'); return false;">🔥 Promoções</a></li>
   </ul>
 </nav>
 ```
@@ -123,6 +122,7 @@
   <aside class="sidebar-menu" id="mobile-sidebar">
     <div class="sidebar-top">
       <div class="logo-container">
+        <i class="fas fa-microchip"></i>
         <span class="logo-wordmark">DOM</span>
       </div>
       <button class="h-icon-btn" id="close-menu-btn" aria-label="Fechar menu">
@@ -139,14 +139,17 @@
     <li><a href="#" onclick="dom.route('home'); document.getElementById('close-menu-btn').click(); return false;">
       <i class="fas fa-home"></i> Início
     </a></li>
-    <li><a href="#" onclick="dom.filterCategory('new'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-sparkles"></i> Novidades
+    <li><a href="#" onclick="dom.filterCategory('notebooks'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-laptop"></i> Notebooks
+    </a></li>
+    <li><a href="#" onclick="dom.filterCategory('smartphones'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-mobile-alt"></i> Smartphones
+    </a></li>
+    <li><a href="#" onclick="dom.filterCategory('acessorios'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-headphones"></i> Acessórios
     </a></li>
     <li><a href="#" onclick="dom.filterCategory('sale'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-fire"></i> Em Promoção
-    </a></li>
-    <li><a href="#" onclick="dom.filterCategory('bestseller'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-crown"></i> Mais Vendidos
+      <i class="fas fa-fire"></i> Promoções
     </a></li>
     <li class="sidebar-divider"></li>
     <li><a href="#" onclick="dom.route('profile'); document.getElementById('close-menu-btn').click(); return false;">
@@ -158,19 +161,12 @@
     <li><a href="#" onclick="dom.openChat(); document.getElementById('close-menu-btn').click(); return false;">
       <i class="fas fa-comments"></i> Chat IA
     </a></li>
-    <li class="sidebar-divider"></li>
-    <li><a href="#" onclick="dom.route('about'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-info-circle"></i> Sobre
-    </a></li>
-    <li><a href="#" onclick="dom.route('contact'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-headset"></i> Contato
-    </a></li>
   </ul>
 </nav>
 
 <div class="sidebar-footer">
   <p>DOM © 2024</p>
-  <p>Lingerie Premium</p>
+  <p>Eletrônicos Premium</p>
 </div>
 ```
 
@@ -181,25 +177,25 @@
   <main id="main-content" class="main-content">
 
 ```
-<!-- ──── HERO BANNER ──── -->
+<!-- HERO BANNER -->
 <section class="hero-banner">
   <div class="hero-content">
-    <span class="hero-badge">✨ Coleção Verão 2024</span>
-    <h1>Conforto e <span class="gradient-text">Sensualidade</span></h1>
-    <p>Descubra a nova coleção de lingerie premium com até 40% OFF nesta semana!</p>
+    <span class="hero-badge">⚡ Tecnologia Avançada</span>
+    <h1>Inovação que <span class="gradient-text">Conecta</span></h1>
+    <p>Explore a nova linha de eletrônicos premium com até 40% OFF nesta semana!</p>
     <div class="hero-actions">
-      <button class="btn-primary" onclick="dom.route('products'); return false;">Explorar Coleção</button>
-      <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'}); return false;">Saiba Mais</button>
+      <button class="btn-primary" onclick="dom.route('products'); return false;">Ver Ofertas</button>
+      <button class="btn-secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'}); return false;">Saiba Mais</button>
     </div>
   </div>
   <div class="hero-image">
     <div class="hero-placeholder">
-      <i class="fas fa-image"></i>
+      <i class="fas fa-laptop-code"></i>
     </div>
   </div>
 </section>
 
-<!-- ──── TRUST BADGES ──── -->
+<!-- TRUST BADGES -->
 <section class="trust-section">
   <div class="trust-item">
     <i class="fas fa-truck-fast"></i>
@@ -209,12 +205,12 @@
   <div class="trust-item">
     <i class="fas fa-lock"></i>
     <h3>100% Seguro</h3>
-    <p>Pagamento protegido</p>
+    <p>Pagamento protegido SSL</p>
   </div>
   <div class="trust-item">
     <i class="fas fa-redo"></i>
-    <h3>Troca Garantida</h3>
-    <p>30 dias para devolver</p>
+    <h3>Garantia</h3>
+    <p>1 ano de cobertura</p>
   </div>
   <div class="trust-item">
     <i class="fas fa-headset"></i>
@@ -223,42 +219,42 @@
   </div>
 </section>
 
-<!-- ──── CATEGORIAS DESTAQUES ──── -->
-<section class="featured-categories">
+<!-- CATEGORIAS -->
+<section class="featured-categories" id="categories">
   <h2>Categorias em Destaque</h2>
   <div class="categories-grid">
-    <div class="category-card" onclick="dom.filterCategory('basics'); return false;">
+    <div class="category-card" onclick="dom.filterCategory('notebooks'); return false;">
       <div class="category-image">
-        <i class="fas fa-heart"></i>
+        <i class="fas fa-laptop"></i>
       </div>
-      <h3>Basics</h3>
-      <p>Essenciais do dia a dia</p>
+      <h3>Notebooks</h3>
+      <p>Últimos modelos</p>
     </div>
-    <div class="category-card" onclick="dom.filterCategory('premium'); return false;">
+    <div class="category-card" onclick="dom.filterCategory('smartphones'); return false;">
       <div class="category-image">
-        <i class="fas fa-crown"></i>
+        <i class="fas fa-mobile-alt"></i>
       </div>
-      <h3>Premium</h3>
-      <p>Coleção luxo</p>
+      <h3>Smartphones</h3>
+      <p>5G avançado</p>
     </div>
-    <div class="category-card" onclick="dom.filterCategory('sport'); return false;">
+    <div class="category-card" onclick="dom.filterCategory('tablets'); return false;">
       <div class="category-image">
-        <i class="fas fa-running"></i>
+        <i class="fas fa-tablet-alt"></i>
       </div>
-      <h3>Sport</h3>
-      <p>Para atividades</p>
+      <h3>Tablets</h3>
+      <p>Telas grandes</p>
     </div>
-    <div class="category-card" onclick="dom.filterCategory('sensual'); return false;">
+    <div class="category-card" onclick="dom.filterCategory('acessorios'); return false;">
       <div class="category-image">
-        <i class="fas fa-star"></i>
+        <i class="fas fa-headphones"></i>
       </div>
-      <h3>Sensual</h3>
-      <p>Para momentos especiais</p>
+      <h3>Acessórios</h3>
+      <p>Complementos premium</p>
     </div>
   </div>
 </section>
 
-<!-- ──── TOOLBAR DE PRODUTOS ──── -->
+<!-- TOOLBAR -->
 <section class="products-toolbar-section">
   <div class="toolbar-header">
     <h2>Produtos em Destaque</h2>
@@ -282,10 +278,9 @@
   </div>
 </section>
 
-<!-- ──── GRID DE PRODUTOS ──── -->
+<!-- PRODUTOS -->
 <section id="products" class="products-section">
   <div id="products-list" class="products-grid">
-    <!-- Loading State -->
     <div class="products-loading">
       <div class="spinner"></div>
       <p>Carregando produtos...</p>
@@ -293,16 +288,16 @@
   </div>
 </section>
 
-<!-- ──── PROMO BANNER ──── -->
+<!-- PROMO BANNER -->
 <section class="promo-banner">
   <div class="promo-content">
-    <h3>Clube de Fidelidade</h3>
-    <p>Ganhe pontos a cada compra e desbloqueie benefícios exclusivos</p>
+    <h3>Programa de Pontos DOM</h3>
+    <p>Ganhe pontos a cada compra e troque por descontos exclusivos!</p>
     <button class="btn-primary" onclick="dom.openChat(); return false;">Saiba Mais</button>
   </div>
 </section>
 
-<!-- ──── BESTSELLERS ──── -->
+<!-- BESTSELLERS -->
 <section class="bestsellers-section">
   <h2>Mais Vendidos</h2>
   <div id="bestsellers-grid" class="products-grid">
@@ -310,7 +305,7 @@
   </div>
 </section>
 
-<!-- ──── DEPOIMENTOS ──── -->
+<!-- DEPOIMENTOS -->
 <section class="testimonials-section">
   <h2>O que Clientes Dizem</h2>
   <div class="testimonials-grid">
@@ -323,9 +318,9 @@
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
         </div>
-        <p class="testimonial-author">Maria Silva</p>
+        <p class="testimonial-author">João Santos</p>
       </div>
-      <p class="testimonial-text">"Produto de excelente qualidade! Chegou rápido e bem embalado. Super recomendo!"</p>
+      <p class="testimonial-text">"Melhor preço do mercado! Entrega rápida e produto de qualidade. Recomendo!"</p>
       <p class="testimonial-date">Há 2 dias</p>
     </div>
 
@@ -338,9 +333,9 @@
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
         </div>
-        <p class="testimonial-author">Ana Costa</p>
+        <p class="testimonial-author">Marina Costa</p>
       </div>
-      <p class="testimonial-text">"Amei o atendimento do chat IA! Respondeu todas as minhas dúvidas rapidinho."</p>
+      <p class="testimonial-text">"Chat IA resolveu minha dúvida em segundos! Muito bom mesmo."</p>
       <p class="testimonial-date">Há 5 dias</p>
     </div>
 
@@ -353,28 +348,18 @@
           <i class="fas fa-star"></i>
           <i class="fas fa-star-half-alt"></i>
         </div>
-        <p class="testimonial-author">Jessica Lima</p>
+        <p class="testimonial-author">Carlos Lima</p>
       </div>
-      <p class="testimonial-text">"Melhor compra que já fiz! Qualidade premium com preço justo. 5 estrelas!"</p>
+      <p class="testimonial-text">"Qualidade de verdade com preço que cabe no bolso. Voltarei a comprar!"</p>
       <p class="testimonial-date">Há 1 semana</p>
     </div>
   </div>
 </section>
 
-<!-- ──── FAQ ──── -->
+<!-- FAQ -->
 <section class="faq-section" id="about">
   <h2>Perguntas Frequentes</h2>
   <div class="faq-grid">
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Como funciona a troca?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Você tem 30 dias para trocar ou devolver seu produto. Entre em contato conosco via chat ou email.</p>
-      </div>
-    </div>
-
     <div class="faq-item">
       <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
         <span>Qual é o tempo de entrega?</span>
@@ -387,50 +372,60 @@
 
     <div class="faq-item">
       <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Qual é a garantia dos produtos?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Todos os produtos possuem garantia de 1 ano contra defeitos de fabricação.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
         <span>Aceitam parcelamento?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="faq-answer">
-        <p>Sim! Aceitamos crédito até 12x, débito, PIX com 5% off e dinheiro na entrega.</p>
+        <p>Sim! Crédito até 12x, débito, PIX com 5% off e dinheiro na entrega.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Como saber meu tamanho?</span>
+        <span>Como fazer uma devolução?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="faq-answer">
-        <p>Temos um guia de tamanhos detalhado em cada produto. Dúvidas? Chat com especialista 24/7!</p>
+        <p>Você tem 30 dias para devolver. Entre em contato via chat ou email que resolvemos!</p>
       </div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Produtos são originais?</span>
+        <span>Os produtos são originais?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="faq-answer">
-        <p>100% originais! Todos os produtos possuem garantia e certificado de autenticidade.</p>
+        <p>100% originais! Todos possuem certificado de autenticidade e lacre de fábrica.</p>
       </div>
     </div>
 
     <div class="faq-item">
       <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Vocês têm programa de fidelidade?</span>
+        <span>Posso rastrear meu pedido?</span>
         <i class="fas fa-chevron-down"></i>
       </button>
       <div class="faq-answer">
-        <p>Sim! Ganhe pontos a cada compra e troque por descontos exclusivos em futuras compras.</p>
+        <p>Sim! Você recebe um código de rastreamento assim que o pedido sai do estoque.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ──── NEWSLETTER ──── -->
+<!-- NEWSLETTER -->
 <section class="newsletter-section">
-  <h2>Receba Nossas Novidades</h2>
-  <p>Inscreva-se para receber ofertas exclusivas e lançamentos primeiro!</p>
+  <h2>Receba Nossas Ofertas</h2>
+  <p>Inscreva-se e ganhe 10% OFF na primeira compra!</p>
   <form class="newsletter-form" onsubmit="return false;">
     <input type="email" placeholder="seu@email.com" required>
     <button type="submit" class="btn-primary">Inscrever</button>
@@ -454,7 +449,7 @@
     </div>
     <div>
       <p class="ecom-cart-head-label">Meu Carrinho</p>
-      <p class="ecom-cart-head-store">DOM Premium</p>
+      <p class="ecom-cart-head-store">DOM Eletrônicos</p>
     </div>
   </div>
   <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
@@ -579,7 +574,7 @@
     <i class="fas fa-lock"></i>
     <span>Carrinho vazio</span>
   </button>
-  <p class="checkout-note">Pagamento seguro com SSL</p>
+  <p class="checkout-note">Pagamento 100% seguro com SSL</p>
 </div>
 ```
 
@@ -623,7 +618,7 @@
       <!-- Mensagens injetadas -->
     </div>
     <div class="chat-footer">
-      <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
+      <input type="text" id="chat-input" placeholder="Digite sua pergunta...">
       <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
@@ -635,9 +630,9 @@
       <div class="footer-column">
         <h4>DOM</h4>
         <ul>
-          <li><a href="#" onclick="dom.route('about'); return false;">Sobre Nós</a></li>
-          <li><a href="#" onclick="dom.route('contact'); return false;">Contato</a></li>
-          <li><a href="#">Blog</a></li>
+          <li><a href="#">Sobre Nós</a></li>
+          <li><a href="#">Contato</a></li>
+          <li><a href="#">Blog Tech</a></li>
           <li><a href="#">Carreiras</a></li>
         </ul>
       </div>
@@ -646,21 +641,21 @@
         <ul>
           <li><a href="#">FAQ</a></li>
           <li><a href="#">Entregas</a></li>
-          <li><a href="#">Trocas e Devoluções</a></li>
-          <li><a href="#">Politica de Privacidade</a></li>
+          <li><a href="#">Garantia</a></li>
+          <li><a href="#">Privacidade</a></li>
         </ul>
       </div>
       <div class="footer-column">
         <h4>Conecte-se</h4>
         <ul>
           <li><a href="#">Instagram</a></li>
-          <li><a href="#">TikTok</a></li>
           <li><a href="#">YouTube</a></li>
-          <li><a href="#">Pinterest</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
         </ul>
       </div>
       <div class="footer-column">
-        <h4>Métodos de Pagamento</h4>
+        <h4>Segurança</h4>
         <div class="payment-methods">
           <i class="fab fa-cc-visa"></i>
           <i class="fab fa-cc-mastercard"></i>
@@ -669,11 +664,11 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2024 DOM - Lingerie Premium. Todos os direitos reservados.</p>
+      <p>&copy; 2024 DOM - Eletrônicos Premium. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- ════════════════════ SCRIPTS ════════════════════ -->
+  <!-- SCRIPTS -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
