@@ -1,108 +1,128 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DOM - O melhor e-commerce do Brasil. Produtos com qualidade e preço justo.">
+  <meta name="description" content="DOM - Lingerie Premium. Moda, qualidade e conforto. Frete grátis acima de R$ 299.">
   <meta name="theme-color" content="#020617">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 
-  <!-- ÚNICO CSS DO SITE - ordem importa -->
+  <!-- Fonts -->
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="styles/app.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <title>DOM - E-commerce</title>
+  <!-- CSS Global -->
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components/sidebar.css">
+  <link rel="stylesheet" href="styles/components/products.css">
+  <link rel="stylesheet" href="styles/main-cart.css">
+  <link rel="stylesheet" href="styles/components/chat.css">
+
+  <title>DOM - Lingerie Premium</title>
 </head>
 
 <body>
 
-  <!-- ===================== HEADER DESKTOP===================== -->
+  <!-- ════════════════════ HEADER ════════════════════ -->
+
   <header class="site-header" id="main-header">
     <div class="header-inner">
 
-      <!-- [MOBILE ONLY] Botão Hamburguer -->
-      <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <line x1="4" x2="20" y1="6" y2="6" />
-          <line x1="4" x2="20" y1="12" y2="12" />
-          <line x1="4" x2="20" y1="18" y2="18" />
+```
+  <!-- Botão Menu Hamburger (Mobile) -->
+  <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" x2="20" y1="6" y2="6" />
+      <line x1="4" x2="20" y1="12" y2="12" />
+      <line x1="4" x2="20" y1="18" y2="18" />
+    </svg>
+  </button>
+
+  <!-- Logo -->
+  <a href="#" class="site-logo" onclick="dom.route('home'); return false;" aria-label="DOM Home">
+    <div class="logo-container">
+      <img src="assets/logo.svg" alt="DOM Logo" class="logo-img" onerror="this.style.display='none'">
+      <span class="logo-wordmark">DOM</span>
+    </div>
+  </a>
+
+  <!-- Barra de Busca -->
+  <div class="header-search">
+    <div class="search-field">
+      <input type="text" id="search-input" placeholder="Buscar productos..." autocomplete="off" aria-label="Buscar">
+      <button aria-label="Pesquisar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
         </svg>
       </button>
-
-      <!-- Logo -->
-      <a href="/" class="site-logo" aria-label="DOM Home">
-        <div class="logo-container">
-          <img src="logo.jpg" alt="DOM Logo" class="logo-img">
-          <span class="logo-wordmark">DOM</span>
-        </div>
-      </a>
-
-      <!-- [DESKTOP ONLY] Nav Categorias -->
-      <nav class="header-nav" aria-label="Categorias">
-        <ul>
-          <li><a href="#" onclick="dom.filterCategory(''); return false;">Início</a></li>
-          <li class="has-dropdown">
-            <a href="#" onclick="return false;">Categorias <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="3">
-                <path d="m6 9 6 6 6-6" />
-              </svg></a>
-            <ul class="dropdown" id="desktop-categories-dropdown">
-              <!-- Categorias injetadas via JS -->
-            </ul>
-          </li>
-          <li><a href="#" onclick="return false;">Ofertas</a></li>
-        </ul>
-      </nav>
-
-      <!-- Barra de Busca (aparece em todas as telas) -->
-      <div class="header-search">
-        <div class="search-field">
-          <input type="text" id="search-input" placeholder="Buscar produtos..." autocomplete="off" aria-label="Buscar">
-          <button aria-label="Pesquisar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Ações: Conta + Carrinho -->
-      <div class="header-actions">
-        <!-- [DESKTOP ONLY] Ícone de Conta -->
-        <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.openProfile()">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </button>
-        <!-- Carrinho (visível em TODAS as telas) -->
-        <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="8" cy="21" r="1" />
-            <circle cx="19" cy="21" r="1" />
-            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-          </svg>
-          <span class="h-cart-badge" id="cart-count-header">0</span>
-        </button>
-      </div>
-
     </div>
+  </div>
+
+  <!-- Ações Header -->
+  <div class="header-actions">
+    <!-- Notificações -->
+    <button class="h-icon-btn notification-btn" aria-label="Notificações" title="Notificações">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+      </svg>
+      <span class="notification-badge">2</span>
+    </button>
+
+    <!-- Conta/Perfil -->
+    <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.route('profile'); return false;" title="Perfil">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+    </button>
+
+    <!-- Carrinho -->
+    <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho" title="Ver carrinho">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+      <span class="h-cart-badge" id="cart-count-header">0</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- Desktop Navigation -->
+<nav class="header-nav-desktop" aria-label="Navegação">
+  <ul>
+    <li><a href="#" onclick="dom.route('home'); return false;">Início</a></li>
+    <li><a href="#" onclick="dom.filterCategory('new'); return false;">Novidades</a></li>
+    <li><a href="#" onclick="dom.filterCategory('sale'); return false;">🔥 Em Promoção</a></li>
+    <li><a href="#" onclick="dom.filterCategory('bestseller'); return false;">Mais Vendidos</a></li>
+    <li><a href="#" onclick="dom.route('about'); return false;">Sobre</a></li>
+    <li><a href="#" onclick="dom.route('contact'); return false;">Contato</a></li>
+  </ul>
+</nav>
+```
+
   </header>
 
-  <!-- ===================== SIDEBAR MOBILE ===================== -->
+  <!-- ════════════════════ SIDEBAR MOBILE ════════════════════ -->
+
   <div class="sidebar-overlay" id="mobile-overlay"></div>
   <aside class="sidebar-menu" id="mobile-sidebar">
     <div class="sidebar-top">
       <div class="logo-container">
-        <img src="logo.jpg" alt="DOM Logo" class="logo-img">
         <span class="logo-wordmark">DOM</span>
       </div>
       <button class="h-icon-btn" id="close-menu-btn" aria-label="Fechar menu">
@@ -112,326 +132,555 @@
         </svg>
       </button>
     </div>
-    <nav class="sidebar-nav">
-      <ul>
-        <li><a href="#"
-            onclick="dom.filterCategory(''); document.getElementById('close-menu-btn').click(); return false;">🏠
-            Início</a></li>
-        <li class="sidebar-section-title">Categorias</li>
-        <div id="mobile-categories-list">
-          <!-- Categorias injetadas via JS -->
-        </div>
-        <li><a href="#" onclick="return false;">🏷️ Ofertas do Dia</a></li>
-        <li><a href="#" onclick="return false;">👤 Minha Conta</a></li>
-      </ul>
-    </nav>
+
+```
+<nav class="sidebar-nav">
+  <ul>
+    <li><a href="#" onclick="dom.route('home'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-home"></i> Início
+    </a></li>
+    <li><a href="#" onclick="dom.filterCategory('new'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-sparkles"></i> Novidades
+    </a></li>
+    <li><a href="#" onclick="dom.filterCategory('sale'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-fire"></i> Em Promoção
+    </a></li>
+    <li><a href="#" onclick="dom.filterCategory('bestseller'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-crown"></i> Mais Vendidos
+    </a></li>
+    <li class="sidebar-divider"></li>
+    <li><a href="#" onclick="dom.route('profile'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-user"></i> Meu Perfil
+    </a></li>
+    <li><a href="#" onclick="dom.route('orders'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-receipt"></i> Pedidos
+    </a></li>
+    <li><a href="#" onclick="dom.openChat(); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-comments"></i> Chat IA
+    </a></li>
+    <li class="sidebar-divider"></li>
+    <li><a href="#" onclick="dom.route('about'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-info-circle"></i> Sobre
+    </a></li>
+    <li><a href="#" onclick="dom.route('contact'); document.getElementById('close-menu-btn').click(); return false;">
+      <i class="fas fa-headset"></i> Contato
+    </a></li>
+  </ul>
+</nav>
+
+<div class="sidebar-footer">
+  <p>DOM © 2024</p>
+  <p>Lingerie Premium</p>
+</div>
+```
+
   </aside>
 
-  <!-- ===================== MAIN CONTENT ===================== -->
-  <main id="main-content">
+  <!-- ════════════════════ MAIN CONTENT ════════════════════ -->
 
-    <!-- Banner -->
-    <section class="hero-banner">
-      <div class="hero-content">
-        <span class="hero-badge">Novidades da Semana</span>
-        <h1>Tecnologia que <span class="highlight">Conecta</span></h1>
-        <p>Explore a nova linha de periféricos e acessórios premium com até 30% OFF.</p>
-        <div class="hero-actions">
-          <a href="#products" class="btn-primary">Ver Ofertas</a>
-          <a href="#" class="btn-outline">Saiba Mais</a>
-        </div>
-      </div>
-    </section>
+  <main id="main-content" class="main-content">
 
-    <!-- Grid de Produtos -->
-    <section id="products" class="products-section">
-      <div class="products-toolbar">
-        <h2 id="products-title">Produtos</h2>
-        <select id="sort" aria-label="Ordenar por">
-          <option value="popular">Mais vendidos</option>
-          <option value="price-asc">Menor preço</option>
-          <option value="price-desc">Maior preço</option>
-        </select>
+```
+<!-- ──── HERO BANNER ──── -->
+<section class="hero-banner">
+  <div class="hero-content">
+    <span class="hero-badge">✨ Coleção Verão 2024</span>
+    <h1>Conforto e <span class="gradient-text">Sensualidade</span></h1>
+    <p>Descubra a nova coleção de lingerie premium com até 40% OFF nesta semana!</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="dom.route('products'); return false;">Explorar Coleção</button>
+      <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'}); return false;">Saiba Mais</button>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-placeholder">
+      <i class="fas fa-image"></i>
+    </div>
+  </div>
+</section>
+
+<!-- ──── TRUST BADGES ──── -->
+<section class="trust-section">
+  <div class="trust-item">
+    <i class="fas fa-truck-fast"></i>
+    <h3>Frete Grátis</h3>
+    <p>Acima de R$ 299</p>
+  </div>
+  <div class="trust-item">
+    <i class="fas fa-lock"></i>
+    <h3>100% Seguro</h3>
+    <p>Pagamento protegido</p>
+  </div>
+  <div class="trust-item">
+    <i class="fas fa-redo"></i>
+    <h3>Troca Garantida</h3>
+    <p>30 dias para devolver</p>
+  </div>
+  <div class="trust-item">
+    <i class="fas fa-headset"></i>
+    <h3>Suporte 24/7</h3>
+    <p>Chat com especialistas</p>
+  </div>
+</section>
+
+<!-- ──── CATEGORIAS DESTAQUES ──── -->
+<section class="featured-categories">
+  <h2>Categorias em Destaque</h2>
+  <div class="categories-grid">
+    <div class="category-card" onclick="dom.filterCategory('basics'); return false;">
+      <div class="category-image">
+        <i class="fas fa-heart"></i>
       </div>
-      <div id="products-list" class="products-grid">
-        <!-- Produtos injetados via JS -->
-        <div class="products-loading">
-          <div class="spinner"></div>
-          <p>Carregando produtos...</p>
+      <h3>Basics</h3>
+      <p>Essenciais do dia a dia</p>
+    </div>
+    <div class="category-card" onclick="dom.filterCategory('premium'); return false;">
+      <div class="category-image">
+        <i class="fas fa-crown"></i>
+      </div>
+      <h3>Premium</h3>
+      <p>Coleção luxo</p>
+    </div>
+    <div class="category-card" onclick="dom.filterCategory('sport'); return false;">
+      <div class="category-image">
+        <i class="fas fa-running"></i>
+      </div>
+      <h3>Sport</h3>
+      <p>Para atividades</p>
+    </div>
+    <div class="category-card" onclick="dom.filterCategory('sensual'); return false;">
+      <div class="category-image">
+        <i class="fas fa-star"></i>
+      </div>
+      <h3>Sensual</h3>
+      <p>Para momentos especiais</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──── TOOLBAR DE PRODUTOS ──── -->
+<section class="products-toolbar-section">
+  <div class="toolbar-header">
+    <h2>Produtos em Destaque</h2>
+    <button class="btn-outline-small" onclick="dom.route('products'); return false;">Ver Tudo →</button>
+  </div>
+
+  <div class="toolbar-controls">
+    <div class="search-field-toolbar">
+      <input type="text" id="search-toolbar" placeholder="Buscar...">
+      <i class="fas fa-search"></i>
+    </div>
+
+    <select id="sort-toolbar" class="sort-select">
+      <option value="">Ordenar por</option>
+      <option value="popular">Mais vendidos</option>
+      <option value="price-asc">Menor preço</option>
+      <option value="price-desc">Maior preço</option>
+      <option value="new">Mais novos</option>
+      <option value="rating">Melhor avaliado</option>
+    </select>
+  </div>
+</section>
+
+<!-- ──── GRID DE PRODUTOS ──── -->
+<section id="products" class="products-section">
+  <div id="products-list" class="products-grid">
+    <!-- Loading State -->
+    <div class="products-loading">
+      <div class="spinner"></div>
+      <p>Carregando produtos...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──── PROMO BANNER ──── -->
+<section class="promo-banner">
+  <div class="promo-content">
+    <h3>Clube de Fidelidade</h3>
+    <p>Ganhe pontos a cada compra e desbloqueie benefícios exclusivos</p>
+    <button class="btn-primary" onclick="dom.openChat(); return false;">Saiba Mais</button>
+  </div>
+</section>
+
+<!-- ──── BESTSELLERS ──── -->
+<section class="bestsellers-section">
+  <h2>Mais Vendidos</h2>
+  <div id="bestsellers-grid" class="products-grid">
+    <!-- Injetado via JS -->
+  </div>
+</section>
+
+<!-- ──── DEPOIMENTOS ──── -->
+<section class="testimonials-section">
+  <h2>O que Clientes Dizem</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="star-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
         </div>
+        <p class="testimonial-author">Maria Silva</p>
       </div>
-    </section>
+      <p class="testimonial-text">"Produto de excelente qualidade! Chegou rápido e bem embalado. Super recomendo!"</p>
+      <p class="testimonial-date">Há 2 dias</p>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="star-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+        </div>
+        <p class="testimonial-author">Ana Costa</p>
+      </div>
+      <p class="testimonial-text">"Amei o atendimento do chat IA! Respondeu todas as minhas dúvidas rapidinho."</p>
+      <p class="testimonial-date">Há 5 dias</p>
+    </div>
+
+    <div class="testimonial-card">
+      <div class="testimonial-header">
+        <div class="star-rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+        </div>
+        <p class="testimonial-author">Jessica Lima</p>
+      </div>
+      <p class="testimonial-text">"Melhor compra que já fiz! Qualidade premium com preço justo. 5 estrelas!"</p>
+      <p class="testimonial-date">Há 1 semana</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──── FAQ ──── -->
+<section class="faq-section" id="about">
+  <h2>Perguntas Frequentes</h2>
+  <div class="faq-grid">
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Como funciona a troca?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Você tem 30 dias para trocar ou devolver seu produto. Entre em contato conosco via chat ou email.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Qual é o tempo de entrega?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Entregamos em 3-5 dias úteis para regiões metropolitanas. Frete grátis acima de R$ 299.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Aceitam parcelamento?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Sim! Aceitamos crédito até 12x, débito, PIX com 5% off e dinheiro na entrega.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Como saber meu tamanho?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Temos um guia de tamanhos detalhado em cada produto. Dúvidas? Chat com especialista 24/7!</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Produtos são originais?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>100% originais! Todos os produtos possuem garantia e certificado de autenticidade.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
+        <span>Vocês têm programa de fidelidade?</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="faq-answer">
+        <p>Sim! Ganhe pontos a cada compra e troque por descontos exclusivos em futuras compras.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──── NEWSLETTER ──── -->
+<section class="newsletter-section">
+  <h2>Receba Nossas Novidades</h2>
+  <p>Inscreva-se para receber ofertas exclusivas e lançamentos primeiro!</p>
+  <form class="newsletter-form" onsubmit="return false;">
+    <input type="email" placeholder="seu@email.com" required>
+    <button type="submit" class="btn-primary">Inscrever</button>
+  </form>
+</section>
+```
 
   </main>
 
-  <!-- ===================== CARRINHO SIDEBAR PREMIUM ===================== -->
+  <!-- ════════════════════ CARRINHO SIDEBAR ════════════════════ -->
+
   <div id="cart-overlay" class="cart-overlay"></div>
 
   <aside id="cart-sidebar" class="ecom-cart-sidebar">
 
-    <!-- Header do Carrinho -->
-    <div class="ecom-cart-head">
-      <div class="ecom-cart-head-left">
-        <div class="ecom-cart-logo-wrap">
-          <img src="logo.jpg" alt="DOM" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
-        </div>
-        <div>
-          <p class="ecom-cart-head-label">Meu Carrinho</p>
-          <p class="ecom-cart-head-store">DOM Eletrônicos</p>
-        </div>
-      </div>
-      <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
-        <i class="fas fa-times"></i>
-      </button>
+```
+<div class="ecom-cart-head">
+  <div class="ecom-cart-head-left">
+    <div class="ecom-cart-logo-wrap">
+      <i class="fas fa-shopping-bag"></i>
     </div>
-
-    <!-- Área Rolável -->
-    <div class="ecom-cart-body">
-
-      <!-- Banner Frete Grátis -->
-      <div class="ecom-cart-frete-banner">
-        <i class="fas fa-truck-fast"></i>
-        <span>Frete grátis para compras acima de <strong>R$ 299</strong></span>
-      </div>
-
-      <!-- Título + Limpar -->
-      <div class="ecom-cart-items-head">
-        <div class="ecom-cart-items-title">
-          <i class="fas fa-shopping-cart"></i>
-          <h3>Seus produtos</h3>
-        </div>
-        <button id="cart-clear-btn" class="ecom-cart-clear-btn">
-          <i class="fas fa-trash-alt"></i> Limpar
-        </button>
-      </div>
-
-      <!-- Itens (injetados via JS) -->
-      <div id="cart-items" class="ecom-cart-items"></div>
-
-      <!-- Continuar Comprando -->
-      <div class="ecom-cart-continue">
-        <button onclick="document.getElementById('close-cart').click()">
-          <i class="fas fa-plus-circle"></i> Adicionar mais produtos
-        </button>
-      </div>
-
-      <!-- ══ Tipo de Entrega ══ -->
-      <div class="ecom-section-card">
-        <div class="ecom-section-title">
-          <span class="ecom-section-icon"><i class="fas fa-shipping-fast"></i></span>
-          <span>Tipo de Entrega</span>
-        </div>
-        <div class="ecom-delivery-options" id="order-type-options">
-
-          <label class="ecom-option" id="type-delivery">
-            <input type="radio" name="order_type" value="delivery" class="cart-type-radio" checked>
-            <span class="ecom-option-icon delivery"><i class="fas fa-truck"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">Entrega em casa</span>
-              <span class="ecom-option-sub">Receba no endereço cadastrado</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-          <label class="ecom-option" id="type-retirada">
-            <input type="radio" name="order_type" value="retirada" class="cart-type-radio">
-            <span class="ecom-option-icon retirada"><i class="fas fa-store"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">Retirar na loja</span>
-              <span class="ecom-option-sub">Disponível em até 2h</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-        </div>
-
-        <!-- Campo CEP (só para entrega) -->
-        <div class="ecom-cep-row" id="cep-row">
-          <i class="fas fa-map-marker-alt"></i>
-          <input type="text" id="cep-input" placeholder="Digite seu CEP para calcular o frete" maxlength="9">
-          <button id="cep-btn"><i class="fas fa-search"></i></button>
-        </div>
-        <p class="ecom-cep-result" id="cep-result"></p>
-      </div>
-
-      <!-- ══ Forma de Pagamento ══ -->
-      <div class="ecom-section-card">
-        <div class="ecom-section-title">
-          <span class="ecom-section-icon"><i class="fas fa-wallet"></i></span>
-          <span>Forma de Pagamento</span>
-        </div>
-        <div class="ecom-delivery-options" id="payment-options">
-
-          <label class="ecom-option" id="opt-credit">
-            <input type="radio" name="payment_method" value="credit" class="cart-payment-radio" checked>
-            <span class="ecom-option-icon credit"><i class="fas fa-credit-card"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">Cartão de Crédito</span>
-              <span class="ecom-option-sub">Visa, Master, Elo — até 12x</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-          <label class="ecom-option" id="opt-debit">
-            <input type="radio" name="payment_method" value="debit" class="cart-payment-radio">
-            <span class="ecom-option-icon debit"><i class="fas fa-money-check-alt"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">Cartão de Débito</span>
-              <span class="ecom-option-sub">Débito na hora</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-          <label class="ecom-option" id="opt-pix">
-            <input type="radio" name="payment_method" value="pix" class="cart-payment-radio">
-            <span class="ecom-option-icon pix"><i class="fas fa-qrcode"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">PIX</span>
-              <span class="ecom-option-sub">Aprovação instantânea · 5% off</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-          <label class="ecom-option" id="opt-cash">
-            <input type="radio" name="payment_method" value="cash" class="cart-payment-radio">
-            <span class="ecom-option-icon cash"><i class="fas fa-money-bill-wave"></i></span>
-            <div class="ecom-option-info">
-              <span class="ecom-option-title">Dinheiro</span>
-              <span class="ecom-option-sub">Pague na entrega / retirada</span>
-            </div>
-            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-          </label>
-
-          <!-- Troco (só aparece para Dinheiro) -->
-          <div class="ecom-troco hidden" id="change-row">
-            <i class="fas fa-coins"></i>
-            <div class="ecom-troco-info">
-              <p>Precisa de troco?</p>
-              <div class="ecom-troco-btns">
-                <button type="button" class="ecom-troco-btn active" id="change-yes">Sim</button>
-                <button type="button" class="ecom-troco-btn" id="change-no">Não</button>
-              </div>
-              <div class="ecom-troco-amount" id="change-amount-row">
-                <span>R$</span>
-                <input type="number" id="change-amount" placeholder="0,00" min="0" step="0.01" inputmode="decimal">
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- ══ Resumo de Valores ══ -->
-      <div class="ecom-totals-card">
-        <div class="ecom-totals-row">
-          <span>Subtotal</span>
-          <span id="cart-subtotal-val">R$ 0,00</span>
-        </div>
-        <div class="ecom-totals-row" id="cart-delivery-row">
-          <span>Frete</span>
-          <span id="delivery-fee-val" class="ecom-frete-badge">A calcular</span>
-        </div>
-        <div class="ecom-totals-row" id="delivery-time-row">
-          <span><i class="far fa-clock"></i> Prazo estimado</span>
-          <span id="delivery-time-val">—</span>
-        </div>
-        <div class="ecom-totals-divider"></div>
-        <div class="ecom-totals-row ecom-totals-final">
-          <span>Total</span>
-          <span id="cart-total-val">R$ 0,00</span>
-        </div>
-        <p class="ecom-parcel-hint" id="parcel-hint"></p>
-      </div>
-
-      <!-- Campos ocultos (compatibilidade JS) -->
-      <div class="hidden">
-        <textarea id="delivery-address"></textarea>
-        <input type="tel" id="delivery-phone">
-      </div>
-
-    </div><!-- fim .ecom-cart-body -->
-
-    <!-- Rodapé Fixo: Finalizar -->
-    <div class="ecom-cart-footer">
-      <button id="checkout-button" class="ecom-checkout-btn" disabled>
-        <i class="fas fa-lock"></i>
-        <span>Carrinho vazio</span>
-      </button>
+    <div>
+      <p class="ecom-cart-head-label">Meu Carrinho</p>
+      <p class="ecom-cart-head-store">DOM Premium</p>
     </div>
+  </div>
+  <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
+<div class="ecom-cart-body">
+
+  <!-- Banner Frete -->
+  <div class="ecom-cart-frete-banner">
+    <i class="fas fa-truck-fast"></i>
+    <span>Frete grátis para compras acima de <strong>R$ 299</strong></span>
+  </div>
+
+  <!-- Itens -->
+  <div class="ecom-cart-items-head">
+    <h3>Produtos (<span id="cart-items-count">0</span>)</h3>
+    <button id="cart-clear-btn" class="btn-text">Limpar</button>
+  </div>
+
+  <div id="cart-items" class="ecom-cart-items">
+    <div class="cart-empty">
+      <i class="fas fa-shopping-bag"></i>
+      <p>Seu carrinho está vazio</p>
+    </div>
+  </div>
+
+  <!-- Entrega -->
+  <div class="ecom-section-card">
+    <div class="ecom-section-title">
+      <span class="ecom-section-icon"><i class="fas fa-map-location-dot"></i></span>
+      <span>Entrega</span>
+    </div>
+    <div class="ecom-delivery-options">
+      <label class="ecom-option">
+        <input type="radio" name="delivery" value="delivery" checked>
+        <span class="ecom-option-icon"><i class="fas fa-truck"></i></span>
+        <div class="ecom-option-info">
+          <span class="ecom-option-title">Entrega em Casa</span>
+          <span class="ecom-option-sub">3-5 dias úteis</span>
+        </div>
+        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+      </label>
+      <label class="ecom-option">
+        <input type="radio" name="delivery" value="pickup">
+        <span class="ecom-option-icon"><i class="fas fa-store"></i></span>
+        <div class="ecom-option-info">
+          <span class="ecom-option-title">Retirar na Loja</span>
+          <span class="ecom-option-sub">Imediato · São Paulo</span>
+        </div>
+        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+      </label>
+    </div>
+    <div class="ecom-cep-row">
+      <i class="fas fa-map-marker"></i>
+      <input type="text" id="cep-input" placeholder="00000-000" maxlength="9">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+
+  <!-- Pagamento -->
+  <div class="ecom-section-card">
+    <div class="ecom-section-title">
+      <span class="ecom-section-icon"><i class="fas fa-wallet"></i></span>
+      <span>Forma de Pagamento</span>
+    </div>
+    <div class="ecom-delivery-options">
+      <label class="ecom-option">
+        <input type="radio" name="payment" value="credit" checked>
+        <span class="ecom-option-icon"><i class="fas fa-credit-card"></i></span>
+        <div class="ecom-option-info">
+          <span class="ecom-option-title">Crédito</span>
+          <span class="ecom-option-sub">Até 12x sem juros</span>
+        </div>
+        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+      </label>
+      <label class="ecom-option">
+        <input type="radio" name="payment" value="pix">
+        <span class="ecom-option-icon"><i class="fas fa-qrcode"></i></span>
+        <div class="ecom-option-info">
+          <span class="ecom-option-title">PIX</span>
+          <span class="ecom-option-sub">5% de desconto</span>
+        </div>
+        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+      </label>
+      <label class="ecom-option">
+        <input type="radio" name="payment" value="debit">
+        <span class="ecom-option-icon"><i class="fas fa-money-check"></i></span>
+        <div class="ecom-option-info">
+          <span class="ecom-option-title">Débito</span>
+          <span class="ecom-option-sub">Na hora</span>
+        </div>
+        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Resumo -->
+  <div class="ecom-totals-card">
+    <div class="ecom-totals-row">
+      <span>Subtotal</span>
+      <span id="cart-subtotal-val">R$ 0,00</span>
+    </div>
+    <div class="ecom-totals-row">
+      <span>Frete</span>
+      <span id="delivery-fee-val">A calcular</span>
+    </div>
+    <div class="ecom-totals-divider"></div>
+    <div class="ecom-totals-row ecom-totals-final">
+      <span>Total</span>
+      <span id="cart-total-val">R$ 0,00</span>
+    </div>
+    <p class="ecom-parcel-hint" id="parcel-hint"></p>
+  </div>
+
+</div>
+
+<!-- Checkout -->
+<div class="ecom-cart-footer">
+  <button id="checkout-button" class="ecom-checkout-btn" disabled>
+    <i class="fas fa-lock"></i>
+    <span>Carrinho vazio</span>
+  </button>
+  <p class="checkout-note">Pagamento seguro com SSL</p>
+</div>
+```
 
   </aside>
 
-  <!-- ===================== BOTTOM NAVIGATION (MOBILE ONLY) ===================== -->
+  <!-- ════════════════════ BOTTOM NAV (MOBILE) ════════════════════ -->
+
   <nav class="mobile-bottom-nav">
-    <a href="#" class="nav-item active" onclick="dom.filterCategory(''); return false;">
+    <a href="#" class="nav-item active" onclick="dom.route('home'); return false;">
       <i class="fas fa-home"></i>
       <span>Início</span>
     </a>
-    <a href="#" class="nav-item" onclick="dom.openOrders(); return false;">
-      <i class="fas fa-shopping-bag"></i>
-      <span>Pedidos</span>
+    <a href="#" class="nav-item" onclick="dom.filterCategory('sale'); return false;">
+      <i class="fas fa-fire"></i>
+      <span>Promoção</span>
     </a>
     <a href="#" class="nav-item" onclick="dom.openChat(); return false;">
       <i class="fas fa-comments"></i>
-      <span>Chat</span>
+      <span>Chat IA</span>
     </a>
-    <a href="#" class="nav-item" onclick="dom.openProfile(); return false;">
+    <a href="#" class="nav-item" onclick="dom.route('orders'); return false;">
+      <i class="fas fa-shopping-bag"></i>
+      <span>Pedidos</span>
+    </a>
+    <a href="#" class="nav-item" onclick="dom.route('profile'); return false;">
       <i class="fas fa-user"></i>
       <span>Perfil</span>
     </a>
   </nav>
 
-  <!-- ===================== MODAIS ADICIONAIS ===================== -->
-  <!-- Chat Widget -->
-  <div id="chat-widget" class="chat-widget hidden"></div>
+  <!-- ════════════════════ CHAT WIDGET ════════════════════ -->
 
-  <!-- Perfil / Login Modal -->
-  <div id="profile-overlay" class="cart-overlay"></div>
-  <aside id="profile-sidebar" class="ecom-cart-sidebar profile-sidebar">
-    <div class="ecom-cart-head">
-      <div class="ecom-cart-head-left">
-        <div class="ecom-cart-logo-wrap"><i class="fas fa-user-circle"></i></div>
-        <div>
-          <p class="ecom-cart-head-label">Minha Conta</p>
-          <p class="ecom-cart-head-store" id="user-display-name">Visitante</p>
+  <div id="chat-widget" class="chat-widget hidden">
+    <div class="chat-header">
+      <h3>Chat IA - DOM</h3>
+      <button class="chat-close" onclick="dom.closeChat()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="chat-body" id="chat-messages">
+      <!-- Mensagens injetadas -->
+    </div>
+    <div class="chat-footer">
+      <input type="text" id="chat-input" placeholder="Digite sua mensagem...">
+      <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- ════════════════════ FOOTER ════════════════════ -->
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h4>DOM</h4>
+        <ul>
+          <li><a href="#" onclick="dom.route('about'); return false;">Sobre Nós</a></li>
+          <li><a href="#" onclick="dom.route('contact'); return false;">Contato</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Carreiras</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Ajuda</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Entregas</a></li>
+          <li><a href="#">Trocas e Devoluções</a></li>
+          <li><a href="#">Politica de Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Conecte-se</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Pinterest</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Métodos de Pagamento</h4>
+        <div class="payment-methods">
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
         </div>
       </div>
-      <button onclick="dom.closeProfile()" class="h-icon-btn cart-close-btn"><i class="fas fa-times"></i></button>
     </div>
-    <div class="ecom-cart-body" id="profile-content">
-      <!-- Conteúdo do Perfil injetado via JS -->
+    <div class="footer-bottom">
+      <p>&copy; 2024 DOM - Lingerie Premium. Todos os direitos reservados.</p>
     </div>
-  </aside>
+  </footer>
 
-  <!-- Pedidos Modal -->
-  <div id="orders-overlay" class="cart-overlay"></div>
-  <aside id="orders-sidebar" class="ecom-cart-sidebar orders-sidebar">
-    <div class="ecom-cart-head">
-      <div class="ecom-cart-head-left">
-        <div class="ecom-cart-logo-wrap"><i class="fas fa-shopping-bag"></i></div>
-        <div>
-          <p class="ecom-cart-head-label">Meus Pedidos</p>
-          <p class="ecom-cart-head-store">Histórico de compras</p>
-        </div>
-      </div>
-      <button onclick="dom.closeOrders()" class="h-icon-btn cart-close-btn"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="ecom-cart-body" id="orders-content">
-      <div class="cart-empty">
-        <i class="fas fa-history" style="font-size:40px;margin-bottom:12px;display:block"></i>
-        <p>Você ainda não tem pedidos</p>
-      </div>
-    </div>
-  </aside>
+  <!-- ════════════════════ SCRIPTS ════════════════════ -->
 
-  <!-- ===================== SCRIPTS ===================== -->
-  <!-- Supabase CDN (carregado ANTES do app) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Config do Supabase -->
+
   <script src="src/config/supabase.js"></script>
-  <!-- Header e interações UI -->
+
   <script src="src/header.js"></script>
-  <!-- App principal como módulo ES6 -->
+
   <script type="module" src="src/app.js"></script>
 
 </body>
