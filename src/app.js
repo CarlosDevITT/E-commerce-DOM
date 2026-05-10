@@ -1,10 +1,11 @@
+
 // src/app.js — Inicializador e gerenciador de rotas
 ‘use strict’;
 
 import { initAuth, logout } from ‘./modules/auth.js’;
 import { initProducts, loadProducts, searchProducts, sortProducts, filterByCategory } from ‘./modules/products.js’;
 import { initCart, addToCart, removeFromCart, updateCartQty, clearCart } from ‘./modules/cart.js’;
-import { initChat } from ‘./modules/chat.js’;
+import { initChat, openChat, closeChat } from ‘./modules/chat.js’;
 import { initUI, openSidebar, closeSidebar, toggleSidebar } from ‘./modules/ui.js’;
 import { initPWA } from ‘./modules/pwa_handler.js’;
 
@@ -20,7 +21,7 @@ if (this.initialized) return;
 
 ```
 try {
-  console.log('🚀 Inicializando DOM E-commerce...');
+  console.log('🚀 Inicializando DOM E-commerce de Eletrônicos...');
 
   // 1. Inicializar PWA
   await initPWA();
@@ -46,15 +47,88 @@ try {
   await initProducts();
   console.log('✅ Produtos inicializados');
 
-  // 7. Carregar produtos na Home
+  // 7. Setup handlers
+  this.setupHandlers();
+  console.log('✅ Handlers configurados');
+
+  // 8. Carregar produtos na Home
   await this.route('home');
   console.log('✅ Rota Home carregada');
 
   this.initialized = true;
-  console.log('✅ DOM E-commerce iniciado com sucesso!');
+  console.log('✅ DOM Eletrônicos iniciado com sucesso!');
 } catch (error) {
   console.error('❌ Erro ao inicializar app:', error);
   this.showError('Erro ao inicializar aplicação');
+}
+```
+
+},
+
+setupHandlers() {
+// Menu hamburguer
+const menuBtn = document.getElementById(‘menu-btn’);
+const closeMenuBtn = document.getElementById(‘close-menu-btn’);
+const mobileOverlay = document.getElementById(‘mobile-overlay’);
+
+```
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => openSidebar('mobile-sidebar'));
+}
+if (closeMenuBtn) {
+  closeMenuBtn.addEventListener('click', () => closeSidebar('mobile-sidebar'));
+}
+if (mobileOverlay) {
+  mobileOverlay.addEventListener('click', () => closeSidebar('mobile-sidebar'));
+}
+
+// Carrinho
+const cartBtn = document.getElementById('cart-button-header');
+const closeCart = document.getElementById('close-cart');
+const cartOverlay = document.getElementById('cart-overlay');
+
+if (cartBtn) {
+  cartBtn.addEventListener('click', () => openSidebar('cart-sidebar'));
+}
+if (closeCart) {
+  closeCart.addEventListener('click', () => closeSidebar('cart-sidebar'));
+}
+if (cartOverlay) {
+  cartOverlay.addEventListener('click', () => closeSidebar('cart-sidebar'));
+}
+
+// Search
+const searchInput = document.getElementById('search-input');
+if (searchInput) {
+  let timer;
+  searchInput.addEventListener('input', (e) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => searchProducts(e.target.value), 300);
+  });
+}
+
+// Sort
+const sortToolbar = document.getElementById('sort-toolbar');
+if (sortToolbar) {
+  sortToolbar.addEventListener('change', (e) => {
+    if (e.target.value) sortProducts(e.target.value);
+  });
+}
+
+// Clear cart
+const clearBtn = document.getElementById('cart-clear-btn');
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    if (confirm('Tem certeza que deseja limpar o carrinho?')) {
+      clearCart();
+    }
+  });
+}
+
+// Checkout
+const checkoutBtn = document.getElementById('checkout-button');
+if (checkoutBtn) {
+  checkoutBtn.addEventListener('click', () => this.checkout());
 }
 ```
 
@@ -67,7 +141,7 @@ console.log(`📍 Navegando para: ${routeName}`);
 this.currentRoute = routeName;
 
 ```
-  // Fechar sidebars abertas
+  // Fechar sidebars
   this.closeSidebars();
 
   switch (routeName) {
@@ -78,7 +152,7 @@ this.currentRoute = routeName;
       await this.loadProducts();
       break;
     case 'cart':
-      await this.loadCart();
+      openSidebar('cart-sidebar');
       break;
     case 'profile':
       await this.loadProfile();
@@ -86,12 +160,18 @@ this.currentRoute = routeName;
     case 'orders':
       await this.loadOrders();
       break;
+    case 'about':
+      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+      break;
+    case 'contact':
+      openChat();
+      break;
     default:
       console.warn(`⚠️ Rota desconhecida: ${routeName}`);
       await this.loadHome();
   }
 
-  // Scrollar para topo
+  // Scroll para topo
   window.scrollTo(0, 0);
 } catch (error) {
   console.error(`❌ Erro ao navegar para ${routeName}:`, error);
@@ -102,176 +182,65 @@ this.currentRoute = routeName;
 },
 
 async loadHome() {
-const main = document.querySelector(‘main’) || document.getElementById(‘app’);
+const main = document.getElementById(‘main-content’);
 if (!main) return;
 
 ```
-main.innerHTML = `
-  <div class="home-section">
-    <h1>Bem-vinda à DOM</h1>
-    <div id="products-list" class="products-grid"></div>
-  </div>
-`;
+// Renderizar todos os produtos na home
 await loadProducts();
 ```
 
 },
 
 async loadProducts() {
-const main = document.querySelector(‘main’) || document.getElementById(‘app’);
+const main = document.getElementById(‘main-content’);
 if (!main) return;
 
 ```
-main.innerHTML = `
-  <div class="products-section">
-    <div class="products-header">
-      <h1>Produtos</h1>
-      <div class="products-controls">
-        <input type="text" id="search-input" placeholder="Buscar produtos...">
-        <select id="sort">
-          <option value="">Ordenar por</option>
-          <option value="price-asc">Preço: menor</option>
-          <option value="price-desc">Preço: maior</option>
-          <option value="name">Nome</option>
-        </select>
-      </div>
-    </div>
-    <div id="products-list" class="products-grid"></div>
-  </div>
-`;
+// Se já existe a seção, apenas recarrega os produtos
 await loadProducts();
-this.setupSearch();
-this.setupSort();
-```
-
-},
-
-async loadCart() {
-const main = document.querySelector(‘main’) || document.getElementById(‘app’);
-if (!main) return;
-
-```
-main.innerHTML = `
-  <div class="cart-section">
-    <h1>Meu Carrinho</h1>
-    <div id="cart-items"></div>
-    <div class="cart-summary">
-      <div class="summary-row">
-        <span>Subtotal:</span>
-        <span id="cart-subtotal-val">R$ 0,00</span>
-      </div>
-      <div class="summary-row">
-        <span>Total:</span>
-        <strong id="cart-total-val">R$ 0,00</strong>
-      </div>
-      <button id="checkout-button" class="btn-primary">
-        <span>Finalizar Pedido</span>
-      </button>
-      <button id="cart-clear-btn" class="btn-secondary">Limpar Carrinho</button>
-    </div>
-  </div>
-`;
-this.setupCartUI();
 ```
 
 },
 
 async loadProfile() {
-const main = document.querySelector(‘main’) || document.getElementById(‘app’);
-if (!main) return;
-
-```
-main.innerHTML = `
-  <div class="profile-section">
-    <h1>Meu Perfil</h1>
-    <div id="profile-content"></div>
-  </div>
-`;
-```
-
+console.log(‘📄 Carregando perfil…’);
+// TODO: Implementar lógica de perfil
+this.showError(‘Função em desenvolvimento’);
 },
 
 async loadOrders() {
-const main = document.querySelector(‘main’) || document.getElementById(‘app’);
-if (!main) return;
-
-```
-main.innerHTML = `
-  <div class="orders-section">
-    <h1>Meus Pedidos</h1>
-    <div id="orders-content"></div>
-  </div>
-`;
-```
-
-},
-
-// ── Helpers UI ─────────────────────────────────────────────────
-setupSearch() {
-const input = document.getElementById(‘search-input’);
-if (!input) return;
-
-```
-let timer;
-input.addEventListener('input', () => {
-  clearTimeout(timer);
-  timer = setTimeout(() => searchProducts(input.value), 300);
-});
-```
-
-},
-
-setupSort() {
-const sort = document.getElementById(‘sort’);
-if (!sort) return;
-
-```
-sort.addEventListener('change', () => {
-  const value = sort.value;
-  if (value) sortProducts(value);
-});
-```
-
-},
-
-setupCartUI() {
-const clearBtn = document.getElementById(‘cart-clear-btn’);
-const checkoutBtn = document.getElementById(‘checkout-button’);
-
-```
-if (clearBtn) {
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Limpar carrinho?')) {
-      clearCart();
-      this.loadCart();
-    }
-  });
-}
-
-if (checkoutBtn) {
-  checkoutBtn.addEventListener('click', () => {
-    this.checkout();
-  });
-}
-```
-
+console.log(‘📦 Carregando pedidos…’);
+// TODO: Implementar lógica de pedidos
+this.showError(‘Função em desenvolvimento’);
 },
 
 async checkout() {
-// TODO: Implementar lógica de checkout
 console.log(‘💳 Checkout iniciado’);
-alert(‘Funcionalidade em desenvolvimento’);
+this.showError(‘Função em desenvolvimento’);
 },
 
 closeSidebars() {
-const sidebars = document.querySelectorAll(’[data-sidebar]’);
-sidebars.forEach(sb => closeSidebar(sb.id));
+closeSidebar(‘mobile-sidebar’);
+closeSidebar(‘cart-sidebar’);
 },
 
 showError(message) {
 const toast = document.createElement(‘div’);
-toast.className = ‘toast error’;
-toast.textContent = message;
+toast.className = ‘toast toast-error’;
+toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+document.body.appendChild(toast);
+
+```
+setTimeout(() => toast.remove(), 4000);
+```
+
+},
+
+showSuccess(message) {
+const toast = document.createElement(‘div’);
+toast.className = ‘toast toast-success’;
+toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
 document.body.appendChild(toast);
 
 ```
@@ -292,7 +261,10 @@ closeSidebar: (id) => closeSidebar(id),
 toggleSidebar: (id) => toggleSidebar(id),
 
 // Carrinho
-cartAdd: (product) => addToCart(product),
+cartAdd: (product) => {
+addToCart(product);
+app.showSuccess(‘Produto adicionado ao carrinho!’);
+},
 cartRemove: (id) => removeFromCart(id),
 cartAddQty: (id) => updateCartQty(id, 1),
 cartRemoveQty: (id) => updateCartQty(id, -1),
@@ -302,10 +274,14 @@ clearCart: () => clearCart(),
 filterCategory: (cat) => filterByCategory(cat),
 search: (term) => searchProducts(term),
 
+// Chat
+openChat: () => openChat(),
+closeChat: () => closeChat(),
+
 // Auth
 logout: () => logout(),
 
-// Inicialização
+// App
 init: () => app.init(),
 };
 
@@ -314,4 +290,9 @@ if (document.readyState === ‘loading’) {
 document.addEventListener(‘DOMContentLoaded’, () => app.init());
 } else {
 app.init();
+}
+
+// Service Worker
+if (‘serviceWorker’ in navigator) {
+navigator.serviceWorker.register(’./sw.js’).catch(err => console.warn(‘SW erro:’, err));
 }
