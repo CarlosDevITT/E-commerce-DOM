@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
@@ -15,114 +14,93 @@
   <link rel="apple-touch-icon" href="./assets/icons/icon-192.png">
 
   <!-- Fonts -->
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <!-- CSS -->
+  <link rel="preload" href="./styles/app.css" as="style">
+  <link rel="preload" href="./styles/header.css" as="style">
+  <link rel="preload" href="./styles/main-cart.css" as="style">
+  <link rel="preload" href="./styles/components/products.css" as="style">
+  <link rel="preload" href="./styles/components/chat.css" as="style">
 
-  <link rel="stylesheet" href="./styles/main.css">
-  <link rel="stylesheet" href="./styles/components/sidebar.css">
-  <link rel="stylesheet" href="./styles/components/products.css">
+  <link rel="stylesheet" href="./styles/app.css">
+  <link rel="stylesheet" href="./styles/header.css">
   <link rel="stylesheet" href="./styles/main-cart.css">
+  <link rel="stylesheet" href="./styles/components/products.css">
   <link rel="stylesheet" href="./styles/components/chat.css">
 
-  <title>DOM - Eletrônicos Premium</title>
+  <title>DOM - Ecommerce</title>
 </head>
 
 <body>
 
   <!-- ════════════════════ HEADER ════════════════════ -->
-
   <header class="site-header" id="main-header">
     <div class="header-inner">
-
-```
-  <!-- Menu Hamburger (Mobile) -->
-  <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
-  </button>
-
-  <!-- Logo -->
-  <a href="#" class="site-logo" onclick="dom.route('home'); return false;" aria-label="DOM Home">
-    <div class="logo-container">
-      <i class="fas fa-microchip"></i>
-      <span class="logo-wordmark">DOM</span>
-    </div>
-  </a>
-
-  <!-- Busca -->
-  <div class="header-search">
-    <div class="search-field">
-      <input type="text" id="search-input" placeholder="Buscar eletrônicos..." autocomplete="off" aria-label="Buscar">
-      <button aria-label="Pesquisar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
+      <!-- Menu Hamburger (Mobile) -->
+      <button class="h-icon-btn hamburger-btn" id="menu-btn" aria-label="Abrir menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="18" y2="18" />
         </svg>
       </button>
+
+      <!-- Logo -->
+      <a href="#" class="site-logo" id="logo-link" aria-label="DOM Home">
+        <div class="logo-container">
+          <span class="logo-wordmark">DOM</span>
+        </div>
+      </a>
+
+      <!-- Busca -->
+      <div class="header-search">
+        <div class="search-field">
+          <input type="text" id="search-input" placeholder="Buscar eletrônicos..." autocomplete="off" aria-label="Buscar">
+          <button aria-label="Pesquisar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ações -->
+      <div class="header-actions">
+       
+         <a href="#" class="nav-item" id="bottom-nav-chat">
+      <i class="fas fa-comments"></i>
+      <span>Chat IA</span>
+    </a>
+
+        <button class="h-icon-btn account-btn" id="profile-btn" aria-label="Minha Conta">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </button>
+
+        <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="8" cy="21" r="1" />
+            <circle cx="19" cy="21" r="1" />
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+          </svg>
+          <span class="h-cart-badge" id="cart-count-header">0</span>
+        </button>
+      </div>
     </div>
-  </div>
-
-  <!-- Ações -->
-  <div class="header-actions">
-    <!-- Notificações -->
-    <button class="h-icon-btn notification-btn" aria-label="Notificações">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-      </svg>
-      <span class="notification-badge">1</span>
-    </button>
-
-    <!-- Perfil -->
-    <button class="h-icon-btn account-btn" aria-label="Minha Conta" onclick="dom.route('profile'); return false;">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
-      </svg>
-    </button>
-
-    <!-- Carrinho -->
-    <button class="h-icon-btn cart-btn" id="cart-button-header" aria-label="Carrinho">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="8" cy="21" r="1" />
-        <circle cx="19" cy="21" r="1" />
-        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-      </svg>
-      <span class="h-cart-badge" id="cart-count-header">0</span>
-    </button>
-  </div>
-
-</div>
-
-<!-- Desktop Nav -->
-<nav class="header-nav-desktop" aria-label="Navegação">
-  <ul>
-    <li><a href="#" onclick="dom.route('home'); return false;">Início</a></li>
-    <li><a href="#" onclick="dom.filterCategory('notebooks'); return false;">Notebooks</a></li>
-    <li><a href="#" onclick="dom.filterCategory('smartphones'); return false;">Smartphones</a></li>
-    <li><a href="#" onclick="dom.filterCategory('acessorios'); return false;">Acessórios</a></li>
-    <li><a href="#" onclick="dom.filterCategory('sale'); return false;">🔥 Promoções</a></li>
-  </ul>
-</nav>
-```
-
   </header>
 
   <!-- ════════════════════ SIDEBAR MOBILE ════════════════════ -->
-
   <div class="sidebar-overlay" id="mobile-overlay"></div>
   <aside class="sidebar-menu" id="mobile-sidebar">
     <div class="sidebar-top">
       <div class="logo-container">
-        <i class="fas fa-microchip"></i>
         <span class="logo-wordmark">DOM</span>
       </div>
       <button class="h-icon-btn" id="close-menu-btn" aria-label="Fechar menu">
@@ -132,491 +110,431 @@
         </svg>
       </button>
     </div>
-
-```
-<nav class="sidebar-nav">
-  <ul>
-    <li><a href="#" onclick="dom.route('home'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-home"></i> Início
-    </a></li>
-    <li><a href="#" onclick="dom.filterCategory('notebooks'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-laptop"></i> Notebooks
-    </a></li>
-    <li><a href="#" onclick="dom.filterCategory('smartphones'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-mobile-alt"></i> Smartphones
-    </a></li>
-    <li><a href="#" onclick="dom.filterCategory('acessorios'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-headphones"></i> Acessórios
-    </a></li>
-    <li><a href="#" onclick="dom.filterCategory('sale'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-fire"></i> Promoções
-    </a></li>
-    <li class="sidebar-divider"></li>
-    <li><a href="#" onclick="dom.route('profile'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-user"></i> Meu Perfil
-    </a></li>
-    <li><a href="#" onclick="dom.route('orders'); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-receipt"></i> Pedidos
-    </a></li>
-    <li><a href="#" onclick="dom.openChat(); document.getElementById('close-menu-btn').click(); return false;">
-      <i class="fas fa-comments"></i> Chat IA
-    </a></li>
-  </ul>
-</nav>
-
-<div class="sidebar-footer">
-  <p>DOM © 2024</p>
-  <p>Eletrônicos Premium</p>
-</div>
-```
-
+    <div class="sidebar-footer">
+      <p>DOM © 2024</p>
+      <p>Eletrônicos Premium</p>
+    </div>
   </aside>
 
   <!-- ════════════════════ MAIN CONTENT ════════════════════ -->
-
   <main id="main-content" class="main-content">
-
-```
-<!-- HERO BANNER -->
-<section class="hero-banner">
-  <div class="hero-content">
-    <span class="hero-badge">⚡ Tecnologia Avançada</span>
-    <h1>Inovação que <span class="gradient-text">Conecta</span></h1>
-    <p>Explore a nova linha de eletrônicos premium com até 40% OFF nesta semana!</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="dom.route('products'); return false;">Ver Ofertas</button>
-      <button class="btn-secondary" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'}); return false;">Saiba Mais</button>
-    </div>
-  </div>
-  <div class="hero-image">
-    <div class="hero-placeholder">
-      <i class="fas fa-laptop-code"></i>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST BADGES -->
-<section class="trust-section">
-  <div class="trust-item">
-    <i class="fas fa-truck-fast"></i>
-    <h3>Frete Grátis</h3>
-    <p>Acima de R$ 299</p>
-  </div>
-  <div class="trust-item">
-    <i class="fas fa-lock"></i>
-    <h3>100% Seguro</h3>
-    <p>Pagamento protegido SSL</p>
-  </div>
-  <div class="trust-item">
-    <i class="fas fa-redo"></i>
-    <h3>Garantia</h3>
-    <p>1 ano de cobertura</p>
-  </div>
-  <div class="trust-item">
-    <i class="fas fa-headset"></i>
-    <h3>Suporte 24/7</h3>
-    <p>Chat com especialistas</p>
-  </div>
-</section>
-
-<!-- CATEGORIAS -->
-<section class="featured-categories" id="categories">
-  <h2>Categorias em Destaque</h2>
-  <div class="categories-grid">
-    <div class="category-card" onclick="dom.filterCategory('notebooks'); return false;">
-      <div class="category-image">
-        <i class="fas fa-laptop"></i>
-      </div>
-      <h3>Notebooks</h3>
-      <p>Últimos modelos</p>
-    </div>
-    <div class="category-card" onclick="dom.filterCategory('smartphones'); return false;">
-      <div class="category-image">
-        <i class="fas fa-mobile-alt"></i>
-      </div>
-      <h3>Smartphones</h3>
-      <p>5G avançado</p>
-    </div>
-    <div class="category-card" onclick="dom.filterCategory('tablets'); return false;">
-      <div class="category-image">
-        <i class="fas fa-tablet-alt"></i>
-      </div>
-      <h3>Tablets</h3>
-      <p>Telas grandes</p>
-    </div>
-    <div class="category-card" onclick="dom.filterCategory('acessorios'); return false;">
-      <div class="category-image">
-        <i class="fas fa-headphones"></i>
-      </div>
-      <h3>Acessórios</h3>
-      <p>Complementos premium</p>
-    </div>
-  </div>
-</section>
-
-<!-- TOOLBAR -->
-<section class="products-toolbar-section">
-  <div class="toolbar-header">
-    <h2>Produtos em Destaque</h2>
-    <button class="btn-outline-small" onclick="dom.route('products'); return false;">Ver Tudo →</button>
-  </div>
-
-  <div class="toolbar-controls">
-    <div class="search-field-toolbar">
-      <input type="text" id="search-toolbar" placeholder="Buscar...">
-      <i class="fas fa-search"></i>
-    </div>
-
-    <select id="sort-toolbar" class="sort-select">
-      <option value="">Ordenar por</option>
-      <option value="popular">Mais vendidos</option>
-      <option value="price-asc">Menor preço</option>
-      <option value="price-desc">Maior preço</option>
-      <option value="new">Mais novos</option>
-      <option value="rating">Melhor avaliado</option>
-    </select>
-  </div>
-</section>
-
-<!-- PRODUTOS -->
-<section id="products" class="products-section">
-  <div id="products-list" class="products-grid">
-    <div class="products-loading">
-      <div class="spinner"></div>
-      <p>Carregando produtos...</p>
-    </div>
-  </div>
-</section>
-
-<!-- PROMO BANNER -->
-<section class="promo-banner">
-  <div class="promo-content">
-    <h3>Programa de Pontos DOM</h3>
-    <p>Ganhe pontos a cada compra e troque por descontos exclusivos!</p>
-    <button class="btn-primary" onclick="dom.openChat(); return false;">Saiba Mais</button>
-  </div>
-</section>
-
-<!-- BESTSELLERS -->
-<section class="bestsellers-section">
-  <h2>Mais Vendidos</h2>
-  <div id="bestsellers-grid" class="products-grid">
-    <!-- Injetado via JS -->
-  </div>
-</section>
-
-<!-- DEPOIMENTOS -->
-<section class="testimonials-section">
-  <h2>O que Clientes Dizem</h2>
-  <div class="testimonials-grid">
-    <div class="testimonial-card">
-      <div class="testimonial-header">
-        <div class="star-rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+      <div class="hero-content">
+        <span class="hero-badge">⚡ Tecnologia Avançada</span>
+        <h1>Inovação que <span class="gradient-text">Conecta</span></h1>
+        <p>Explore a nova linha de eletrônicos premium com até 40% OFF nesta semana!</p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="view-offers-btn">Ver Ofertas</button>
         </div>
-        <p class="testimonial-author">João Santos</p>
       </div>
-      <p class="testimonial-text">"Melhor preço do mercado! Entrega rápida e produto de qualidade. Recomendo!"</p>
-      <p class="testimonial-date">Há 2 dias</p>
-    </div>
-
-    <div class="testimonial-card">
-      <div class="testimonial-header">
-        <div class="star-rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
+      <div class="hero-image">
+        <div class="hero-placeholder">
+          <i class="fas fa-laptop-code"></i>
         </div>
-        <p class="testimonial-author">Marina Costa</p>
       </div>
-      <p class="testimonial-text">"Chat IA resolveu minha dúvida em segundos! Muito bom mesmo."</p>
-      <p class="testimonial-date">Há 5 dias</p>
-    </div>
+    </section>
 
-    <div class="testimonial-card">
-      <div class="testimonial-header">
-        <div class="star-rating">
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star"></i>
-          <i class="fas fa-star-half-alt"></i>
+    <!-- TRUST BADGES -->
+    <section class="trust-section">
+      <div class="trust-item">
+        <i class="fas fa-truck-fast"></i>
+        <h3>Frete Grátis</h3>
+        <p>Acima de R$ 299</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-lock"></i>
+        <h3>100% Seguro</h3>
+        <p>Pagamento protegido SSL</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-redo"></i>
+        <h3>Garantia</h3>
+        <p>1 ano de cobertura</p>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-headset"></i>
+        <h3>Suporte 24/7</h3>
+        <p>Chat com especialistas</p>
+      </div>
+    </section>
+
+    <!-- CATEGORIAS -->
+    <section class="featured-categories" id="categories">
+      <h2>Categorias em Destaque</h2>
+      <div class="categories-grid">
+        <div class="category-card" data-category="notebooks">
+          <div class="category-image">
+            <i class="fas fa-laptop"></i>
+          </div>
+          <h3>Notebooks</h3>
+          <p>Últimos modelos</p>
         </div>
-        <p class="testimonial-author">Carlos Lima</p>
+        <div class="category-card" data-category="smartphones">
+          <div class="category-image">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Smartphones</h3>
+          <p>5G avançado</p>
+        </div>
+        <div class="category-card" data-category="tablets">
+          <div class="category-image">
+            <i class="fas fa-tablet-alt"></i>
+          </div>
+          <h3>Tablets</h3>
+          <p>Telas grandes</p>
+        </div>
+        <div class="category-card" data-category="acessorios">
+          <div class="category-image">
+            <i class="fas fa-headphones"></i>
+          </div>
+          <h3>Acessórios</h3>
+          <p>Complementos premium</p>
+        </div>
       </div>
-      <p class="testimonial-text">"Qualidade de verdade com preço que cabe no bolso. Voltarei a comprar!"</p>
-      <p class="testimonial-date">Há 1 semana</p>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- FAQ -->
-<section class="faq-section" id="about">
-  <h2>Perguntas Frequentes</h2>
-  <div class="faq-grid">
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Qual é o tempo de entrega?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Entregamos em 3-5 dias úteis para regiões metropolitanas. Frete grátis acima de R$ 299.</p>
+    <!-- TOOLBAR -->
+    <section class="products-toolbar-section">
+      <div class="toolbar-header">
+        <h2>Produtos em Destaque</h2>
+        <button class="btn-outline-small" id="view-all-products">Ver Tudo →</button>
       </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Qual é a garantia dos produtos?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Todos os produtos possuem garantia de 1 ano contra defeitos de fabricação.</p>
+      <div class="toolbar-controls">
+        <div class="search-field-toolbar">
+          <input type="text" id="search-toolbar" placeholder="Buscar...">
+          <i class="fas fa-search"></i>
+        </div>
+        <select id="sort-toolbar" class="sort-select">
+          <option value="">Ordenar por</option>
+          <option value="popular">Mais vendidos</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+          <option value="new">Mais novos</option>
+          <option value="rating">Melhor avaliado</option>
+        </select>
       </div>
-    </div>
+    </section>
 
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Aceitam parcelamento?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Sim! Crédito até 12x, débito, PIX com 5% off e dinheiro na entrega.</p>
+    <!-- PRODUTOS -->
+    <section id="products" class="products-section">
+      <div id="products-list" class="products-grid">
+        <div class="products-loading">
+          <div class="spinner"></div>
+          <p>Carregando produtos...</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Como fazer uma devolução?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Você tem 30 dias para devolver. Entre em contato via chat ou email que resolvemos!</p>
+    <!-- PROMO BANNER -->
+    <section class="promo-banner">
+      <div class="promo-content">
+        <h3>Programa de Pontos DOM</h3>
+        <p>Ganhe pontos a cada compra e troque por descontos exclusivos!</p>
+        <button class="btn-primary" id="promo-chat-btn">Saiba Mais</button>
       </div>
-    </div>
+    </section>
 
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Os produtos são originais?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>100% originais! Todos possuem certificado de autenticidade e lacre de fábrica.</p>
+    <!-- BESTSELLERS -->
+    <section class="bestsellers-section">
+      <h2>Mais Vendidos</h2>
+      <div id="bestsellers-grid" class="products-grid"></div>
+    </section>
+
+    <!-- DEPOIMENTOS -->
+    <section class="testimonials-section">
+      <h2>O que Clientes Dizem</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="star-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-author">João Santos</p>
+          </div>
+          <p class="testimonial-text">"Melhor preço do mercado! Entrega rápida e produto de qualidade. Recomendo!"</p>
+          <p class="testimonial-date">Há 2 dias</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="star-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p class="testimonial-author">Marina Costa</p>
+          </div>
+          <p class="testimonial-text">"Chat IA resolveu minha dúvida em segundos! Muito bom mesmo."</p>
+          <p class="testimonial-date">Há 5 dias</p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="star-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="testimonial-author">Carlos Lima</p>
+          </div>
+          <p class="testimonial-text">"Qualidade de verdade com preço que cabe no bolso. Voltarei a comprar!"</p>
+          <p class="testimonial-date">Há 1 semana</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="faq-item">
-      <button class="faq-question" onclick="this.parentElement.classList.toggle('active')">
-        <span>Posso rastrear meu pedido?</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="faq-answer">
-        <p>Sim! Você recebe um código de rastreamento assim que o pedido sai do estoque.</p>
+    <!-- FAQ -->
+    <section class="faq-section" id="about">
+      <h2>Perguntas Frequentes</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Qual é o tempo de entrega?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Entregamos em 3-5 dias úteis para regiões metropolitanas. Frete grátis acima de R$ 299.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Qual é a garantia dos produtos?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Todos os produtos possuem garantia de 1 ano contra defeitos de fabricação.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Aceitam parcelamento?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Sim! Crédito até 12x, débito, PIX com 5% off e dinheiro na entrega.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Como fazer uma devolução?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Você tem 30 dias para devolver. Entre em contato via chat ou email que resolvemos!</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Os produtos são originais?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>100% originais! Todos possuem certificado de autenticidade e lacre de fábrica.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Posso rastrear meu pedido?</span>
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Sim! Você recebe um código de rastreamento assim que o pedido sai do estoque.</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- NEWSLETTER -->
-<section class="newsletter-section">
-  <h2>Receba Nossas Ofertas</h2>
-  <p>Inscreva-se e ganhe 10% OFF na primeira compra!</p>
-  <form class="newsletter-form" onsubmit="return false;">
-    <input type="email" placeholder="seu@email.com" required>
-    <button type="submit" class="btn-primary">Inscrever</button>
-  </form>
-</section>
-```
-
+    <!-- NEWSLETTER -->
+    <section class="newsletter-section">
+      <h2>Receba Nossas Ofertas</h2>
+      <p>Inscreva-se e ganhe 10% OFF na primeira compra!</p>
+      <form class="newsletter-form" id="newsletter-form" onsubmit="return false;">
+        <input type="email" id="newsletter-email" placeholder="seu@email.com" required>
+        <button type="submit" class="btn-primary">Inscrever</button>
+      </form>
+    </section>
   </main>
 
   <!-- ════════════════════ CARRINHO SIDEBAR ════════════════════ -->
-
   <div id="cart-overlay" class="cart-overlay"></div>
-
   <aside id="cart-sidebar" class="ecom-cart-sidebar">
-
-```
-<div class="ecom-cart-head">
-  <div class="ecom-cart-head-left">
-    <div class="ecom-cart-logo-wrap">
-      <i class="fas fa-shopping-bag"></i>
-    </div>
-    <div>
-      <p class="ecom-cart-head-label">Meu Carrinho</p>
-      <p class="ecom-cart-head-store">DOM Eletrônicos</p>
-    </div>
-  </div>
-  <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
-    <i class="fas fa-times"></i>
-  </button>
-</div>
-
-<div class="ecom-cart-body">
-
-  <!-- Banner Frete -->
-  <div class="ecom-cart-frete-banner">
-    <i class="fas fa-truck-fast"></i>
-    <span>Frete grátis para compras acima de <strong>R$ 299</strong></span>
-  </div>
-
-  <!-- Itens -->
-  <div class="ecom-cart-items-head">
-    <h3>Produtos (<span id="cart-items-count">0</span>)</h3>
-    <button id="cart-clear-btn" class="btn-text">Limpar</button>
-  </div>
-
-  <div id="cart-items" class="ecom-cart-items">
-    <div class="cart-empty">
-      <i class="fas fa-shopping-bag"></i>
-      <p>Seu carrinho está vazio</p>
-    </div>
-  </div>
-
-  <!-- Entrega -->
-  <div class="ecom-section-card">
-    <div class="ecom-section-title">
-      <span class="ecom-section-icon"><i class="fas fa-map-location-dot"></i></span>
-      <span>Entrega</span>
-    </div>
-    <div class="ecom-delivery-options">
-      <label class="ecom-option">
-        <input type="radio" name="delivery" value="delivery" checked>
-        <span class="ecom-option-icon"><i class="fas fa-truck"></i></span>
-        <div class="ecom-option-info">
-          <span class="ecom-option-title">Entrega em Casa</span>
-          <span class="ecom-option-sub">3-5 dias úteis</span>
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap">
+          <i class="fas fa-shopping-bag"></i>
         </div>
-        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-      </label>
-      <label class="ecom-option">
-        <input type="radio" name="delivery" value="pickup">
-        <span class="ecom-option-icon"><i class="fas fa-store"></i></span>
-        <div class="ecom-option-info">
-          <span class="ecom-option-title">Retirar na Loja</span>
-          <span class="ecom-option-sub">Imediato · São Paulo</span>
+        <div>
+          <p class="ecom-cart-head-label">Meu Carrinho</p>
+          <p class="ecom-cart-head-store">DOM IMPORTS</p>
         </div>
-        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-      </label>
+      </div>
+      <button id="close-cart" class="h-icon-btn cart-close-btn" aria-label="Fechar carrinho">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div class="ecom-cep-row">
-      <i class="fas fa-map-marker"></i>
-      <input type="text" id="cep-input" placeholder="00000-000" maxlength="9">
-      <button><i class="fas fa-search"></i></button>
-    </div>
-  </div>
-
-  <!-- Pagamento -->
-  <div class="ecom-section-card">
-    <div class="ecom-section-title">
-      <span class="ecom-section-icon"><i class="fas fa-wallet"></i></span>
-      <span>Forma de Pagamento</span>
-    </div>
-    <div class="ecom-delivery-options">
-      <label class="ecom-option">
-        <input type="radio" name="payment" value="credit" checked>
-        <span class="ecom-option-icon"><i class="fas fa-credit-card"></i></span>
-        <div class="ecom-option-info">
-          <span class="ecom-option-title">Crédito</span>
-          <span class="ecom-option-sub">Até 12x sem juros</span>
+    <div class="ecom-cart-body">
+      <div class="ecom-cart-frete-banner">
+        <i class="fas fa-truck-fast"></i>
+        <span>Frete grátis para compras acima de <strong>R$ 299</strong></span>
+      </div>
+      <div class="ecom-cart-items-head">
+        <h3>Produtos (<span id="cart-items-count">0</span>)</h3>
+        <button id="cart-clear-btn" class="btn-text">Limpar</button>
+      </div>
+      <div id="cart-items" class="ecom-cart-items">
+        <div class="cart-empty">
+          <i class="fas fa-shopping-bag"></i>
+          <p>Seu carrinho está vazio</p>
         </div>
-        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-      </label>
-      <label class="ecom-option">
-        <input type="radio" name="payment" value="pix">
-        <span class="ecom-option-icon"><i class="fas fa-qrcode"></i></span>
-        <div class="ecom-option-info">
-          <span class="ecom-option-title">PIX</span>
-          <span class="ecom-option-sub">5% de desconto</span>
+      </div>
+      <div class="ecom-section-card">
+        <div class="ecom-section-title">
+          <span class="ecom-section-icon"><i class="fas fa-map-location-dot"></i></span>
+          <span>Entrega</span>
         </div>
-        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-      </label>
-      <label class="ecom-option">
-        <input type="radio" name="payment" value="debit">
-        <span class="ecom-option-icon"><i class="fas fa-money-check"></i></span>
-        <div class="ecom-option-info">
-          <span class="ecom-option-title">Débito</span>
-          <span class="ecom-option-sub">Na hora</span>
+        <div class="ecom-delivery-options">
+          <label class="ecom-option">
+            <input type="radio" name="delivery" value="delivery" checked>
+            <span class="ecom-option-icon"><i class="fas fa-truck"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Entrega em Casa</span>
+              <span class="ecom-option-sub">3-5 dias úteis</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
+          <label class="ecom-option">
+            <input type="radio" name="delivery" value="pickup">
+            <span class="ecom-option-icon"><i class="fas fa-store"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Retirar na Loja</span>
+              <span class="ecom-option-sub">Imediato · São Paulo</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
         </div>
-        <span class="ecom-option-check"><i class="fas fa-check"></i></span>
-      </label>
+        <div class="ecom-cep-row">
+          <i class="fas fa-map-marker"></i>
+          <input type="text" id="cep-input" placeholder="00000-000" maxlength="9">
+          <button><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+      <div class="ecom-section-card">
+        <div class="ecom-section-title">
+          <span class="ecom-section-icon"><i class="fas fa-wallet"></i></span>
+          <span>Forma de Pagamento</span>
+        </div>
+        <div class="ecom-delivery-options">
+          <label class="ecom-option">
+            <input type="radio" name="payment" value="credit" checked>
+            <span class="ecom-option-icon"><i class="fas fa-credit-card"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Crédito</span>
+              <span class="ecom-option-sub">Até 12x sem juros</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
+          <label class="ecom-option">
+            <input type="radio" name="payment" value="pix">
+            <span class="ecom-option-icon"><i class="fas fa-qrcode"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">PIX</span>
+              <span class="ecom-option-sub">5% de desconto</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
+          <label class="ecom-option">
+            <input type="radio" name="payment" value="debit">
+            <span class="ecom-option-icon"><i class="fas fa-money-check"></i></span>
+            <div class="ecom-option-info">
+              <span class="ecom-option-title">Débito</span>
+              <span class="ecom-option-sub">Na hora</span>
+            </div>
+            <span class="ecom-option-check"><i class="fas fa-check"></i></span>
+          </label>
+        </div>
+      </div>
+      <div class="ecom-totals-card">
+        <div class="ecom-totals-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal-val">R$ 0,00</span>
+        </div>
+        <div class="ecom-totals-row">
+          <span>Frete</span>
+          <span id="delivery-fee-val">A calcular</span>
+        </div>
+        <div class="ecom-totals-divider"></div>
+        <div class="ecom-totals-row ecom-totals-final">
+          <span>Total</span>
+          <span id="cart-total-val">R$ 0,00</span>
+        </div>
+        <p class="ecom-parcel-hint" id="parcel-hint"></p>
+      </div>
     </div>
-  </div>
-
-  <!-- Resumo -->
-  <div class="ecom-totals-card">
-    <div class="ecom-totals-row">
-      <span>Subtotal</span>
-      <span id="cart-subtotal-val">R$ 0,00</span>
+    <div class="ecom-cart-footer">
+      <button id="checkout-button" class="ecom-checkout-btn" disabled>
+        <i class="fas fa-lock"></i>
+        <span>Carrinho vazio</span>
+      </button>
+      <p class="checkout-note">Pagamento 100% seguro com SSL</p>
     </div>
-    <div class="ecom-totals-row">
-      <span>Frete</span>
-      <span id="delivery-fee-val">A calcular</span>
+  </aside>
+
+  <!-- ════════════════════ PRODUCT DETAIL SIDEBAR ════════════════════ -->
+  <div id="product-detail-overlay" class="cart-overlay"></div>
+  <aside id="product-detail-sidebar" class="ecom-cart-sidebar">
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap">
+          <i class="fas fa-box"></i>
+        </div>
+        <div>
+          <p class="ecom-cart-head-label">Detalhes do Produto</p>
+          <p class="ecom-cart-head-store">DOM Eletrônicos</p>
+        </div>
+      </div>
+      <button id="close-product-detail" class="h-icon-btn cart-close-btn" aria-label="Fechar">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div class="ecom-totals-divider"></div>
-    <div class="ecom-totals-row ecom-totals-final">
-      <span>Total</span>
-      <span id="cart-total-val">R$ 0,00</span>
-    </div>
-    <p class="ecom-parcel-hint" id="parcel-hint"></p>
-  </div>
-
-</div>
-
-<!-- Checkout -->
-<div class="ecom-cart-footer">
-  <button id="checkout-button" class="ecom-checkout-btn" disabled>
-    <i class="fas fa-lock"></i>
-    <span>Carrinho vazio</span>
-  </button>
-  <p class="checkout-note">Pagamento 100% seguro com SSL</p>
-</div>
-```
-
+    <div id="product-detail-content" class="ecom-cart-body"></div>
   </aside>
 
   <!-- ════════════════════ BOTTOM NAV (MOBILE) ════════════════════ -->
-
   <nav class="mobile-bottom-nav">
-    <a href="#" class="nav-item active" onclick="dom.route('home'); return false;">
+    <a href="#" class="nav-item active" id="bottom-nav-home">
       <i class="fas fa-home"></i>
       <span>Início</span>
     </a>
-    <a href="#" class="nav-item" onclick="dom.filterCategory('sale'); return false;">
-      <i class="fas fa-fire"></i>
-      <span>Promoção</span>
-    </a>
-    <a href="#" class="nav-item" onclick="dom.openChat(); return false;">
+    <a href="#" class="nav-item" id="bottom-nav-chat">
       <i class="fas fa-comments"></i>
       <span>Chat IA</span>
     </a>
-    <a href="#" class="nav-item" onclick="dom.route('orders'); return false;">
+    <a href="#" class="nav-item" id="bottom-nav-orders">
       <i class="fas fa-shopping-bag"></i>
       <span>Pedidos</span>
     </a>
-    <a href="#" class="nav-item" onclick="dom.route('profile'); return false;">
+    <a href="#" class="nav-item" id="bottom-nav-profile">
       <i class="fas fa-user"></i>
       <span>Perfil</span>
     </a>
   </nav>
 
   <!-- ════════════════════ CHAT WIDGET ════════════════════ -->
-
   <div id="chat-widget" class="chat-widget hidden">
     <div class="chat-header">
-      <h3>Chat IA - DOM</h3>
-      <button class="chat-close" onclick="dom.closeChat()">
+      <h3>Chat - DOM</h3>
+      <button class="chat-close" id="chat-close-btn">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    <div class="chat-body" id="chat-messages">
-      <!-- Mensagens injetadas -->
-    </div>
+    <div class="chat-body" id="chat-messages"></div>
     <div class="chat-footer">
       <input type="text" id="chat-input" placeholder="Digite sua pergunta...">
       <button id="chat-send"><i class="fas fa-paper-plane"></i></button>
@@ -624,7 +542,6 @@
   </div>
 
   <!-- ════════════════════ FOOTER ════════════════════ -->
-
   <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-column">
@@ -664,20 +581,16 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2024 DOM - Eletrônicos Premium. Todos os direitos reservados.</p>
+      <p>&copy; 2026 StatesSoftwares. Todos os direitos reservados.</p>
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
-
+  <!-- ════════════════════ SCRIPTS MODULARES ════════════════════ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <script src="./src/config/supabase.js"></script>
-
-  <script src="./src/header.js"></script>
-
+  
+  <!-- Módulo principal -->
   <script type="module" src="./src/app.js"></script>
-
 </body>
 
 </html>

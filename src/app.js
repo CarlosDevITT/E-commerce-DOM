@@ -1,298 +1,428 @@
+//  src/app.js — Sistema modular sem MODAL e sem SW corrompendo
+'use strict';
 
-// src/app.js — Inicializador e gerenciador de rotas
-‘use strict’;
+// Importa todos os módulos existentes com tratamento de erro
+let modules = {};
 
-import { initAuth, logout } from ‘./modules/auth.js’;
-import { initProducts, loadProducts, searchProducts, sortProducts, filterByCategory } from ‘./modules/products.js’;
-import { initCart, addToCart, removeFromCart, updateCartQty, clearCart } from ‘./modules/cart.js’;
-import { initChat, openChat, closeChat } from ‘./modules/chat.js’;
-import { initUI, openSidebar, closeSidebar, toggleSidebar } from ‘./modules/ui.js’;
-import { initPWA } from ‘./modules/pwa_handler.js’;
-
-// ── Rotas e Estados Globais ────────────────────────────────────────
-const app = {
-currentRoute: ‘home’,
-modules: {},
-initialized: false,
-
-// ── Inicializar todos os módulos ────────────────────────────────
-async init() {
-if (this.initialized) return;
-
-```
-try {
-  console.log('🚀 Inicializando DOM E-commerce de Eletrônicos...');
-
-  // 1. Inicializar PWA
-  await initPWA();
-  console.log('✅ PWA inicializado');
-
-  // 2. Inicializar Autenticação
-  await initAuth();
-  console.log('✅ Autenticação inicializada');
-
-  // 3. Inicializar UI
-  await initUI();
-  console.log('✅ UI inicializada');
-
-  // 4. Inicializar Carrinho
-  await initCart();
-  console.log('✅ Carrinho inicializado');
-
-  // 5. Inicializar Chat IA
-  await initChat();
-  console.log('✅ Chat IA inicializado');
-
-  // 6. Inicializar Produtos
-  await initProducts();
-  console.log('✅ Produtos inicializados');
-
-  // 7. Setup handlers
-  this.setupHandlers();
-  console.log('✅ Handlers configurados');
-
-  // 8. Carregar produtos na Home
-  await this.route('home');
-  console.log('✅ Rota Home carregada');
-
-  this.initialized = true;
-  console.log('✅ DOM Eletrônicos iniciado com sucesso!');
-} catch (error) {
-  console.error('❌ Erro ao inicializar app:', error);
-  this.showError('Erro ao inicializar aplicação');
-}
-```
-
-},
-
-setupHandlers() {
-// Menu hamburguer
-const menuBtn = document.getElementById(‘menu-btn’);
-const closeMenuBtn = document.getElementById(‘close-menu-btn’);
-const mobileOverlay = document.getElementById(‘mobile-overlay’);
-
-```
-if (menuBtn) {
-  menuBtn.addEventListener('click', () => openSidebar('mobile-sidebar'));
-}
-if (closeMenuBtn) {
-  closeMenuBtn.addEventListener('click', () => closeSidebar('mobile-sidebar'));
-}
-if (mobileOverlay) {
-  mobileOverlay.addEventListener('click', () => closeSidebar('mobile-sidebar'));
-}
-
-// Carrinho
-const cartBtn = document.getElementById('cart-button-header');
-const closeCart = document.getElementById('close-cart');
-const cartOverlay = document.getElementById('cart-overlay');
-
-if (cartBtn) {
-  cartBtn.addEventListener('click', () => openSidebar('cart-sidebar'));
-}
-if (closeCart) {
-  closeCart.addEventListener('click', () => closeSidebar('cart-sidebar'));
-}
-if (cartOverlay) {
-  cartOverlay.addEventListener('click', () => closeSidebar('cart-sidebar'));
-}
-
-// Search
-const searchInput = document.getElementById('search-input');
-if (searchInput) {
-  let timer;
-  searchInput.addEventListener('input', (e) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => searchProducts(e.target.value), 300);
-  });
-}
-
-// Sort
-const sortToolbar = document.getElementById('sort-toolbar');
-if (sortToolbar) {
-  sortToolbar.addEventListener('change', (e) => {
-    if (e.target.value) sortProducts(e.target.value);
-  });
-}
-
-// Clear cart
-const clearBtn = document.getElementById('cart-clear-btn');
-if (clearBtn) {
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Tem certeza que deseja limpar o carrinho?')) {
-      clearCart();
-    }
-  });
-}
-
-// Checkout
-const checkoutBtn = document.getElementById('checkout-button');
-if (checkoutBtn) {
-  checkoutBtn.addEventListener('click', () => this.checkout());
-}
-```
-
-},
-
-// ── Sistema de Rotas ───────────────────────────────────────────
-async route(routeName) {
-try {
-console.log(`📍 Navegando para: ${routeName}`);
-this.currentRoute = routeName;
-
-```
-  // Fechar sidebars
-  this.closeSidebars();
-
-  switch (routeName) {
-    case 'home':
-      await this.loadHome();
-      break;
-    case 'products':
-      await this.loadProducts();
-      break;
-    case 'cart':
-      openSidebar('cart-sidebar');
-      break;
-    case 'profile':
-      await this.loadProfile();
-      break;
-    case 'orders':
-      await this.loadOrders();
-      break;
-    case 'about':
-      document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-      break;
-    case 'contact':
-      openChat();
-      break;
-    default:
-      console.warn(`⚠️ Rota desconhecida: ${routeName}`);
-      await this.loadHome();
+async function loadModule(moduleName) {
+  try {
+    const module = await import(`./modules/${moduleName}.js`);
+    modules[moduleName] = module;
+    console.log(`✅ Módulo carregado: ${moduleName}`);
+    return module;
+  } catch (error) {
+    console.error(`❌ Erro ao carregar módulo ${moduleName}:`, error);
+    return null;
   }
+} 
 
-  // Scroll para topo
-  window.scrollTo(0, 0);
-} catch (error) {
-  console.error(`❌ Erro ao navegar para ${routeName}:`, error);
-  this.showError(`Erro ao carregar ${routeName}`);
-}
-```
+// ── Sistema de módulos sincronizados ────────────────────────────────
+const App = {
+  initialized: false,
 
-},
+  async init() {
+    if (this.initialized) return;
 
-async loadHome() {
-const main = document.getElementById(‘main-content’);
-if (!main) return;
+    try {
+      console.log('🚀 Inicializando sistema modular DOM E-commerce...');
 
-```
-// Renderizar todos os produtos na home
-await loadProducts();
-```
+      // Carregar módulos um por um com fallback
+      const moduleNames = ['auth', 'products', 'cart', 'chat', 'ui', 'product-detail', 'profile'];
+      
+      for (const name of moduleNames) {
+        await loadModule(name);
+        await this.delay(100); // Pequeno delay entre carregamentos
+      }
 
-},
+      // Inicializar módulos que existem
+      if (modules.auth && modules.auth.initAuth) await modules.auth.initAuth();
+      if (modules.ui && modules.ui.initUI) await modules.ui.initUI();
+      if (modules.cart && modules.cart.initCart) await modules.cart.initCart();
+      if (modules.chat && modules.chat.initChat) await modules.chat.initChat();
+      if (modules.products && modules.products.initProducts) await modules.products.initProducts();
+      if (modules.product_detail && modules.product_detail.initProductDetail) modules.product_detail.initProductDetail();
+      if (modules.profile && modules.profile.initProfile) await modules.profile.initProfile();
 
-async loadProducts() {
-const main = document.getElementById(‘main-content’);
-if (!main) return;
+      // Configurar eventos
+      this.setupGlobalHandlers();
+      this.setupSidebarHandlers();
+      this.setupCartSync();
+      this.setupProductSync();
 
-```
-// Se já existe a seção, apenas recarrega os produtos
-await loadProducts();
-```
+      // Carregar produtos na home
+      if (modules.products && modules.products.loadProducts) {
+        await modules.products.loadProducts();
+      } else {
+        this.loadFallbackProducts();
+      }
 
-},
+      // Expor API global
+      this.exposeGlobalAPI();
 
-async loadProfile() {
-console.log(‘📄 Carregando perfil…’);
-// TODO: Implementar lógica de perfil
-this.showError(‘Função em desenvolvimento’);
-},
+      this.initialized = true;
+      console.log('✅ Sistema modular inicializado com sucesso!');
+    } catch (error) {
+      console.error('❌ Erro fatal na inicialização:', error);
+      this.showError('Erro ao carregar aplicação. Recarregue a página.');
+    }
+  },
 
-async loadOrders() {
-console.log(‘📦 Carregando pedidos…’);
-// TODO: Implementar lógica de pedidos
-this.showError(‘Função em desenvolvimento’);
-},
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  },
 
-async checkout() {
-console.log(‘💳 Checkout iniciado’);
-this.showError(‘Função em desenvolvimento’);
-},
+  loadFallbackProducts() {
+    const productsContainer = document.getElementById('products-list');
+    if (productsContainer) {
+      productsContainer.innerHTML = `
+        <div class="products-loading">
+          <i class="fas fa-box-open"></i>
+          <p>Produtos disponíveis em breve</p>
+          <button onclick="location.reload()" class="btn-primary">Recarregar</button>
+        </div>
+      `;
+    }
+  },
 
-closeSidebars() {
-closeSidebar(‘mobile-sidebar’);
-closeSidebar(‘cart-sidebar’);
-},
+  setupCartSync() {
+    // Sincroniza contador do carrinho
+    const updateCartUI = () => {
+      const cartCount = document.getElementById('cart-count-header');
+      if (cartCount) {
+        try {
+          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+          cartCount.textContent = count;
+        } catch(e) {
+          cartCount.textContent = '0';
+        }
+      }
+    };
+    updateCartUI();
+    setInterval(updateCartUI, 1000);
+  },
 
-showError(message) {
-const toast = document.createElement(‘div’);
-toast.className = ‘toast toast-error’;
-toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-document.body.appendChild(toast);
+  setupProductSync() {
+    window.showProductDetails = (productId) => {
+      if (modules.products && modules.products.getProducts) {
+        const products = modules.products.getProducts();
+        const product = products?.find(p => p.id == productId);
+        if (product && modules.product_detail && modules.product_detail.openProductDetail) {
+          modules.product_detail.openProductDetail(product);
+        } else {
+          this.showError('Detalhes do produto temporariamente indisponível');
+        }
+      }
+    };
+  },
 
-```
-setTimeout(() => toast.remove(), 4000);
-```
+  setupGlobalHandlers() {
+    // Search
+    const searchInput = document.getElementById('search-input');
+    const searchToolbar = document.getElementById('search-toolbar');
+    
+    const handleSearch = (e) => {
+      const term = e.target.value;
+      if (modules.products && modules.products.searchProducts) {
+        modules.products.searchProducts(term);
+      }
+    };
+    
+    if (searchInput) searchInput.addEventListener('input', handleSearch);
+    if (searchToolbar) searchToolbar.addEventListener('input', handleSearch);
 
-},
+    // Sort
+    const sortSelect = document.getElementById('sort-toolbar');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        if (e.target.value && modules.products && modules.products.sortProducts) {
+          modules.products.sortProducts(e.target.value);
+        }
+      });
+    }
 
-showSuccess(message) {
-const toast = document.createElement(‘div’);
-toast.className = ‘toast toast-success’;
-toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-document.body.appendChild(toast);
+    // Clear cart
+    const clearCartBtn = document.getElementById('cart-clear-btn');
+    if (clearCartBtn) {
+      clearCartBtn.addEventListener('click', () => {
+        if (confirm('Limpar todo o carrinho?')) {
+          if (modules.cart && modules.cart.clearCart) {
+            modules.cart.clearCart();
+          } else {
+            localStorage.setItem('cart', '[]');
+          }
+          this.showSuccess('Carrinho limpo!');
+          this.setupCartSync();
+        }
+      });
+    }
 
-```
-setTimeout(() => toast.remove(), 3000);
-```
+    // Checkout
+    const checkoutBtn = document.getElementById('checkout-button');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', () => this.checkout());
+    }
 
-},
+    // Newsletter
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('newsletter-email')?.value;
+        if (email) {
+          this.showSuccess(`Obrigado por se inscrever!`);
+          newsletterForm.reset();
+        }
+      });
+    }
+
+    // Categorias
+    document.querySelectorAll('.category-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const category = card.dataset.category;
+        if (category && modules.products && modules.products.filterByCategory) {
+          modules.products.filterByCategory(category);
+          this.showSuccess(`Filtrando: ${category}`);
+        }
+      });
+    });
+
+    // FAQ Toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        if (item) item.classList.toggle('active');
+      });
+    });
+
+    // Navegação
+    const logoLink = document.getElementById('logo-link');
+    if (logoLink) logoLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('home');
+    });
+
+    const viewOffersBtn = document.getElementById('view-offers-btn');
+    if (viewOffersBtn) viewOffersBtn.addEventListener('click', () => this.route('products'));
+
+    const viewAllProducts = document.getElementById('view-all-products');
+    if (viewAllProducts) viewAllProducts.addEventListener('click', () => this.route('products'));
+
+    const profileBtn = document.getElementById('profile-btn');
+    if (profileBtn) profileBtn.addEventListener('click', () => this.route('profile'));
+
+    const promoChatBtn = document.getElementById('promo-chat-btn');
+    if (promoChatBtn) promoChatBtn.addEventListener('click', () => this.openChatModule());
+
+    // Bottom nav
+    const bottomNavHome = document.getElementById('bottom-nav-home');
+    if (bottomNavHome) bottomNavHome.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('home');
+    });
+
+    const bottomNavChat = document.getElementById('bottom-nav-chat');
+    if (bottomNavChat) bottomNavChat.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.openChatModule();
+    });
+
+    const bottomNavOrders = document.getElementById('bottom-nav-orders');
+    if (bottomNavOrders) bottomNavOrders.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('orders');
+    });
+
+    const bottomNavProfile = document.getElementById('bottom-nav-profile');
+    if (bottomNavProfile) bottomNavProfile.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('profile');
+    });
+  },
+
+  setupSidebarHandlers() {
+    // Menu mobile
+    const menuBtn = document.getElementById('menu-btn');
+    const closeMenu = document.getElementById('close-menu-btn');
+    const overlay = document.getElementById('mobile-overlay');
+
+    if (menuBtn && modules.ui && modules.ui.openSidebar) {
+      menuBtn.onclick = () => modules.ui.openSidebar('mobile-sidebar');
+    }
+    if (closeMenu && modules.ui && modules.ui.closeSidebar) {
+      closeMenu.onclick = () => modules.ui.closeSidebar('mobile-sidebar');
+    }
+    if (overlay && modules.ui && modules.ui.closeSidebar) {
+      overlay.onclick = () => modules.ui.closeSidebar('mobile-sidebar');
+    }
+
+    // Carrinho sidebar
+    const cartBtn = document.getElementById('cart-button-header');
+    const closeCart = document.getElementById('close-cart');
+    const cartOverlay = document.getElementById('cart-overlay');
+
+    if (cartBtn && modules.ui && modules.ui.openSidebar) {
+      cartBtn.onclick = () => modules.ui.openSidebar('cart-sidebar');
+    }
+    if (closeCart && modules.ui && modules.ui.closeSidebar) {
+      closeCart.onclick = () => modules.ui.closeSidebar('cart-sidebar');
+    }
+    if (cartOverlay && modules.ui && modules.ui.closeSidebar) {
+      cartOverlay.onclick = () => modules.ui.closeSidebar('cart-sidebar');
+    }
+
+    // Produto detalhe
+    const closeProductDetail = document.getElementById('close-product-detail');
+    const productOverlay = document.getElementById('product-detail-overlay');
+
+    if (closeProductDetail && modules.ui && modules.ui.closeSidebar) {
+      closeProductDetail.onclick = () => modules.ui.closeSidebar('product-detail-sidebar');
+    }
+    if (productOverlay && modules.ui && modules.ui.closeSidebar) {
+      productOverlay.onclick = () => modules.ui.closeSidebar('product-detail-sidebar');
+    }
+  },
+
+  openChatModule() {
+    if (modules.chat && modules.chat.openChat) {
+      modules.chat.openChat();
+    } else {
+      // Fallback: mostrar chat widget
+      const chatWidget = document.getElementById('chat-widget');
+      if (chatWidget) {
+        chatWidget.classList.remove('hidden');
+      }
+    }
+  },
+
+  async route(routeName) {
+    try {
+      console.log(`📍 Rota: ${routeName}`);
+      this.closeAllSidebars();
+
+      switch (routeName) {
+        case 'home':
+          if (modules.products && modules.products.loadProducts) {
+            await modules.products.loadProducts();
+          }
+          break;
+        case 'products':
+          if (modules.products && modules.products.loadProducts) {
+            await modules.products.loadProducts();
+          }
+          break;
+        case 'cart':
+          if (modules.ui && modules.ui.openSidebar) {
+            modules.ui.openSidebar('cart-sidebar');
+          }
+          break;
+        case 'profile':
+          this.loadProfile();
+          break;
+        case 'orders':
+          this.loadOrders();
+          break;
+        default:
+          if (modules.products && modules.products.loadProducts) {
+            await modules.products.loadProducts();
+          }
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error(`Erro na rota ${routeName}:`, error);
+    }
+  },
+
+  loadProfile() {
+    const main = document.getElementById('main-content');
+    if (main) {
+      main.innerHTML = `
+        <section class="section-placeholder" style="text-align: center; padding: 60px 20px;">
+          <i class="fas fa-user-circle" style="font-size: 64px; color: var(--primary);"></i>
+          <h2 style="margin: 20px 0;">Perfil do Cliente</h2>
+          <p style="color: var(--text-secondary);">Em breve você poderá gerenciar seus dados e pedidos aqui.</p>
+          <button onclick="location.reload()" class="btn-primary" style="margin-top: 30px;">Voltar à Home</button>
+        </section>
+      `;
+    }
+  },
+
+  loadOrders() {
+    const main = document.getElementById('main-content');
+    if (main) {
+      main.innerHTML = `
+        <section class="section-placeholder" style="text-align: center; padding: 60px 20px;">
+          <i class="fas fa-shopping-bag" style="font-size: 64px; color: var(--primary);"></i>
+          <h2 style="margin: 20px 0;">Meus Pedidos</h2>
+          <p style="color: var(--text-secondary);">Histórico de compras em breve.</p>
+          <button onclick="location.reload()" class="btn-primary" style="margin-top: 30px;">Voltar à Home</button>
+        </section>
+      `;
+    }
+  },
+
+  closeAllSidebars() {
+    if (modules.ui && modules.ui.closeSidebar) {
+      modules.ui.closeSidebar('mobile-sidebar');
+      modules.ui.closeSidebar('cart-sidebar');
+      modules.ui.closeSidebar('product-detail-sidebar');
+    }
+  },
+
+  exposeGlobalAPI() {
+    window.dom = {
+      route: (name) => this.route(name),
+      openSidebar: (id) => modules.ui?.openSidebar?.(id),
+      closeSidebar: (id) => modules.ui?.closeSidebar?.(id),
+      cartAdd: (product) => {
+        if (modules.cart && modules.cart.addToCart) {
+          modules.cart.addToCart(product);
+          this.showSuccess(`${product.name} adicionado ao carrinho!`);
+          this.setupCartSync();
+        }
+      },
+      cartRemove: (id) => {
+        if (modules.cart && modules.cart.removeFromCart) {
+          modules.cart.removeFromCart(id);
+          this.setupCartSync();
+        }
+      },
+      openChat: () => this.openChatModule(),
+      closeChat: () => {
+        if (modules.chat && modules.chat.closeChat) {
+          modules.chat.closeChat();
+        }
+      },
+      showProductDetails: (id) => window.showProductDetails?.(id)
+    };
+  },
+
+  showError(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-error';
+    toast.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${msg}`;
+    toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; padding: 12px 20px; border-radius: 8px; background: #dc2626; color: white;';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
+  },
+
+  showSuccess(msg) {
+    const toast = document.createElement('div');
+    toast.className = 'toast toast-success';
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${msg}`;
+    toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; padding: 12px 20px; border-radius: 8px; background: #10b981; color: white;';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  },
+
+  checkout() {
+    this.showSuccess('Checkout em desenvolvimento!');
+  }
 };
 
-// ── Expor funções globais para HTML (onclick, etc.) ────────────────
-window.dom = {
-// Rotas
-route: (name) => app.route(name),
-
-// Sidebars
-openSidebar: (id) => openSidebar(id),
-closeSidebar: (id) => closeSidebar(id),
-toggleSidebar: (id) => toggleSidebar(id),
-
-// Carrinho
-cartAdd: (product) => {
-addToCart(product);
-app.showSuccess(‘Produto adicionado ao carrinho!’);
-},
-cartRemove: (id) => removeFromCart(id),
-cartAddQty: (id) => updateCartQty(id, 1),
-cartRemoveQty: (id) => updateCartQty(id, -1),
-clearCart: () => clearCart(),
-
-// Produtos
-filterCategory: (cat) => filterByCategory(cat),
-search: (term) => searchProducts(term),
-
-// Chat
-openChat: () => openChat(),
-closeChat: () => closeChat(),
-
-// Auth
-logout: () => logout(),
-
-// App
-init: () => app.init(),
-};
-
-// ── Inicializar quando DOM estiver pronto ──────────────────────────
-if (document.readyState === ‘loading’) {
-document.addEventListener(‘DOMContentLoaded’, () => app.init());
+// ── Inicialização com delay para garantir DOM ──
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(() => App.init(), 100));
 } else {
-app.init();
-}
-
-// Service Worker
-if (‘serviceWorker’ in navigator) {
-navigator.serviceWorker.register(’./sw.js’).catch(err => console.warn(‘SW erro:’, err));
+  setTimeout(() => App.init(), 100);
 }

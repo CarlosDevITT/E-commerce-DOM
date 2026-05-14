@@ -1,2 +1,350 @@
-/* header.css — DESATIVADO. Estilos migrados para styles/app.css */
-/* Este arquivo está vazio intencionalmente para não gerar conflitos. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.site-header.scrolled {
+  background: rgba(2, 6, 23, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 12px 24px;
+}
+
+.site-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-wordmark {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+}
+
+.header-nav-desktop {
+  display: none;
+  margin: 0 12px;
+}
+
+.header-nav-desktop ul {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-nav-desktop li {
+  position: relative;
+}
+
+.header-nav-desktop a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-nav-desktop a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #38bdf8;
+  transform: translateY(-1px);
+}
+
+.header-search {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-field {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.search-field:focus-within {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+  transform: translateY(-1px);
+}
+
+.search-field input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.search-field input::placeholder {
+  color: #64748b;
+}
+
+.search-field button {
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  transition: color 0.2s ease;
+}
+
+.search-field button:hover {
+  color: #38bdf8;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.account-btn {
+  display: none;
+}
+
+.h-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.h-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.hamburger-btn {
+  display: flex;
+}
+
+.cart-btn {
+  position: relative;
+}
+
+.h-cart-badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  border: 1.5px solid #020617;
+  line-height: 1;
+}
+
+.h-cart-badge.visible {
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  .header-inner {
+    padding: 8px 12px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .hamburger-btn,
+  .cart-btn {
+    display: none !important;
+  }
+
+  .account-btn {
+    display: flex !important;
+    order: 3;
+    width: 36px;
+    height: 36px;
+  }
+
+  .site-logo {
+    order: 1;
+  }
+
+  .logo-wordmark {
+    display: none;
+  }
+
+  .header-search {
+    order: 2;
+    flex: 1;
+    max-width: none;
+  }
+
+  .search-field {
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .header-inner {
+    padding: 12px 20px;
+  }
+
+  .header-search {
+    max-width: 360px;
+  }
+
+  .hamburger-btn {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-inner {
+    padding: 14px 32px;
+    gap: 16px;
+  }
+
+  .header-nav-desktop {
+    display: flex;
+  }
+
+  .account-btn {
+    display: flex;
+  }
+
+  .hamburger-btn {
+    display: none !important;
+  }
+
+  .header-search {
+    max-width: 480px;
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: #020617;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+
+.sidebar-menu.active {
+  transform: translateX(0);
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 20px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: #e2e8f0;
+  border-radius: 16px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-nav a:hover {
+  background: rgba(56, 189, 248, 0.08);
+  color: #38bdf8;
+}
+
+.sidebar-divider {
+  margin: 16px 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 24px 20px;
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.6;
+}

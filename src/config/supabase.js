@@ -48,24 +48,32 @@ class SupabaseManager {
     this.waitForSupabase();
   }
 
-  waitForSupabase() {
+  waitForSupabase(attempt = 0) {
     if (window.supabase?.createClient) {
       this.connect();
+    } else if (attempt < 50) {
+      // Retry com backoff: 100ms + 10ms por tentativa
+      const delay = 100 + (attempt * 10);
+      setTimeout(() => this.waitForSupabase(attempt + 1), delay);
     } else {
-      // Retry a cada 100ms
-      setTimeout(() => this.waitForSupabase(), 100);
+      console.warn('⚠️ Supabase não carregou após 50 tentativas');
     }
   }
 
   connect() {
     try {
+      if (!window.supabase?.createClient) {
+        throw new Error('Supabase library não carregou');
+      }
       this.client = window.supabase.createClient(
         SUPABASE_CONFIG.url,
         SUPABASE_CONFIG.anonKey
       );
       this.connected = true;
       console.log('✅ Supabase Manager: Conectado com sucesso');
-      this.testConnection();
+      this.testConnection().catch(err => {
+        console.warn('⚠️ Teste de conexão falhou:', err.message);
+      });
       return true;
     } catch (error) {
       console.error('❌ Erro ao conectar Supabase:', error);
@@ -137,7 +145,13 @@ class SupabaseManager {
         query = query.eq('categoria', categoria);
       }
 
-      const { data, error } = await query;
+      // Timeout de 10 segundos para a query
+      const { data, error } = await Promise.race([
+        query,
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout na query de produtos')), 10000)
+        )
+      ]);
 
       if (error) throw error;
 

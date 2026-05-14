@@ -59,3 +59,16 @@ class AuthService {
 }
 
 export const authService = new AuthService();
+
+export async function initAuth() {
+  console.log('🔧 Inicializando módulo de autenticação...');
+  return authService;
+}
+
+export async function login(email, password) {
+  return authService.login(email, password);
+}
+
+export async function logout() {
+  return authService.logout();
+}

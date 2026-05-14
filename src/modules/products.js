@@ -4,16 +4,18 @@
 let allProducts = []; // fonte de verdade local
 
 // ── Aguarda o SupabaseManager estar pronto ─────────────────
-async function waitForSupabase(retries = 20) {
+async function waitForSupabase(retries = 50) {
   return new Promise((resolve, reject) => {
     let count = 0;
     const check = () => {
       if (window.supabaseManager?.isConnected?.()) {
         resolve(window.supabaseManager);
       } else if (++count >= retries) {
-        reject(new Error('SupabaseManager não ficou disponível.'));
+        reject(new Error('SupabaseManager não ficou disponível após ' + retries + ' tentativas.'));
       } else {
-        setTimeout(check, 300);
+        // Backoff progressivo: começa em 100ms, aumenta gradualmente
+        const delay = Math.min(100 + (count * 20), 500);
+        setTimeout(check, delay);
       }
     };
     check();
@@ -25,11 +27,30 @@ export async function loadProducts() {
   showLoading();
   try {
     const manager = await waitForSupabase();
-    const data = await manager.getProdutos();
+    const data = await Promise.race([
+      manager.getProdutos(),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Timeout carregando produtos')), 8000)
+      )
+    ]);
     allProducts = data || [];
     renderProducts(allProducts);
+    if (allProducts.length === 0) {
+      console.warn('⚠️ Nenhum produto carregado do Supabase');
+    }
   } catch (err) {
     console.error('❌ loadProducts:', err);
+    try {
+      const cached = localStorage.getItem('products_cache');
+      if (cached) {
+        allProducts = JSON.parse(cached);
+        renderProducts(allProducts);
+        showError('Usando dados em cache. Verifique sua conexão.');
+        return;
+      }
+    } catch (cacheErr) {
+      console.error('Erro ao carregar cache:', cacheErr);
+    }
     showError('Erro ao carregar produtos. Verifique sua conexão.');
   }
 }
@@ -65,6 +86,13 @@ export function renderProducts(list) {
         </div>
       </div>`;
   }).join('');
+  
+  // Cache resultados
+  try {
+    localStorage.setItem('products_cache', JSON.stringify(list));
+  } catch (e) {
+    console.warn('Erro ao cachear produtos:', e);
+  }
 }
 
 // ── Busca por texto ────────────────────────────────────────
@@ -100,6 +128,32 @@ export function sortProducts(type) {
 
 // ── Retorna todos os produtos (para o carrinho) ────────────
 export function getProducts() { return allProducts; }
+
+// ── Inicialização do módulo ───────────────────────────────
+export async function initProducts() {
+  console.log('🔧 Inicializando módulo de produtos...');
+  
+  // Adicionar listeners aos botões de adicionar
+  document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('add-cart-btn')) {
+      const productId = e.target.getAttribute('data-id');
+      const productName = e.target.getAttribute('data-name');
+      const productPrice = e.target.getAttribute('data-price');
+      const productImage = e.target.getAttribute('data-image');
+      
+      if (typeof window.dom?.cartAdd === 'function') {
+        window.dom.cartAdd({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          image_url: productImage
+        });
+      }
+    }
+  });
+  
+  return true;
+}
 
 // ── Helpers de UI ──────────────────────────────────────────
 function showLoading() {
