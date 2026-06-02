@@ -1,10 +1,14 @@
-// src/modules/product-detail.js - Sidebar de detalhes do produto
+// src/modules/product-detail.js - Sidebar de detalhes do produto (OTIMIZADO)
 'use strict';
 
 let currentProduct = null;
 let currentQty = 1;
+let templateReady = false;
 
 export function initProductDetail() {
+  // Renderizar template uma única vez
+  ensureProductDetailTemplate();
+  
   // Listener para cliques nos cards de produto
   document.addEventListener('click', handleProductCardClick);
   
@@ -31,38 +35,24 @@ function handleProductCardClick(e) {
   if (productId) openProductDetail(productId);
 }
 
-export function openProductDetail(productId) {
-  const products = window.getProducts?.() || [];
-  const product = products.find(p => String(p.id) === String(productId));
-  
-  if (!product) {
-    console.warn('Produto não encontrado:', productId);
-    return;
-  }
-  
-  currentProduct = product;
-  currentQty = 1;
-  
-  const sidebar = document.getElementById('product-detail-sidebar');
-  if (!sidebar) return;
+// Renderizar template HTML apenas uma vez
+function ensureProductDetailTemplate() {
+  if (templateReady) return;
   
   const content = document.getElementById('product-detail-content');
   if (!content) return;
   
-  const price = Number(product.price ?? 0).toFixed(2).replace('.', ',');
-  const image = product.image_url || product.imagem_url || 'https://placehold.co/400x400/1e293b/38bdf8?text=DOM';
-  
   content.innerHTML = `
     <div style="padding: 1.5rem;">
-      <img src="${image}" alt="${product.name}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem;">
+      <img id="detail-img" src="" alt="" style="width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem;">
       
-      <h2 style="font-size: 1.75rem; font-weight: 900; color: white; margin-bottom: 0.75rem;">${product.name}</h2>
+      <h2 id="detail-title" style="font-size: 1.75rem; font-weight: 900; color: white; margin-bottom: 0.75rem;"></h2>
       
-      <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;">${product.description || 'Produto de qualidade superior'}</p>
+      <p id="detail-desc" style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.6;"></p>
       
       <div style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem;">
         <span style="font-size: 0.75rem; color: #64748b; text-transform: uppercase;">Preço</span>
-        <div style="font-size: 2rem; font-weight: 900; color: #38bdf8; margin-top: 0.5rem;">R$ ${price}</div>
+        <div id="detail-price" style="font-size: 2rem; font-weight: 900; color: #38bdf8; margin-top: 0.5rem;"></div>
       </div>
       
       <div style="margin-bottom: 1.5rem;">
@@ -80,7 +70,13 @@ export function openProductDetail(productId) {
     </div>
   `;
   
-  const qtyVal = content.querySelector('#detail-qty-val');
+  // Anexar listeners
+  setupProductDetailListeners();
+  templateReady = true;
+}
+
+function setupProductDetailListeners() {
+  const content = document.getElementById('product-detail-content');
   const qtyMinus = content.querySelector('#detail-qty-minus');
   const qtyPlus = content.querySelector('#detail-qty-plus');
   const addBtn = content.querySelector('#detail-add-btn');
@@ -88,14 +84,14 @@ export function openProductDetail(productId) {
   qtyMinus.onclick = () => {
     if (currentQty > 1) {
       currentQty--;
-      qtyVal.textContent = currentQty;
+      content.querySelector('#detail-qty-val').textContent = currentQty;
     }
   };
   
   qtyPlus.onclick = () => {
     if (currentQty < 99) {
       currentQty++;
-      qtyVal.textContent = currentQty;
+      content.querySelector('#detail-qty-val').textContent = currentQty;
     }
   };
   
@@ -103,7 +99,7 @@ export function openProductDetail(productId) {
     const addToCartFn = window.dom?.cartAdd || window.addToCart;
     if (typeof addToCartFn === 'function') {
       for (let i = 0; i < currentQty; i++) {
-        addToCartFn(product);
+        addToCartFn(currentProduct);
       }
     }
     addBtn.innerHTML = '<i class="fas fa-check"></i> Adicionado!';
@@ -112,11 +108,60 @@ export function openProductDetail(productId) {
       addBtn.innerHTML = '<i class="fas fa-cart-plus"></i> Adicionar ao Carrinho';
       addBtn.disabled = false;
       currentQty = 1;
-      qtyVal.textContent = '1';
+      content.querySelector('#detail-qty-val').textContent = '1';
     }, 1800);
   };
+}
+
+export function openProductDetail(productOrId) {
+  const product = getProductFromArg(productOrId);
+  
+  if (!product) {
+    console.warn('Produto não encontrado:', productOrId);
+    return;
+  }
+  
+  currentProduct = product;
+  currentQty = 1;
+  
+  const content = document.getElementById('product-detail-content');
+  if (!content) return;
+  
+  // Garantir template
+  if (!templateReady) {
+    ensureProductDetailTemplate();
+  }
+  
+  // Atualizar apenas os dados (sem reconstruir HTML)
+  const price = Number(product.price ?? 0).toFixed(2).replace('.', ',');
+  const image = product.image_url || product.imagem_url || 'https://placehold.co/400x400/1e293b/38bdf8?text=DOM';
+  
+  const img = content.querySelector('#detail-img');
+  img.src = image;
+  img.alt = product.name;
+  
+  const title = content.querySelector('#detail-title');
+  title.textContent = product.name;
+  
+  const desc = content.querySelector('#detail-desc');
+  desc.textContent = product.description || 'Produto de qualidade superior';
+  
+  const priceEl = content.querySelector('#detail-price');
+  priceEl.textContent = 'R$ ' + price;
+  
+  const qtyVal = content.querySelector('#detail-qty-val');
+  qtyVal.textContent = '1';
   
   window.dom?.openSidebar('product-detail-sidebar');
+}
+
+function getProductFromArg(productOrId) {
+  if (!productOrId) return null;
+  if (typeof productOrId === 'object' && productOrId.id != null) {
+    return productOrId;
+  }
+  const products = window.dom?.getProducts?.() || window.getProducts?.() || [];
+  return products.find(p => String(p.id) === String(productOrId));
 }
 
 export function closeProductDetail() {

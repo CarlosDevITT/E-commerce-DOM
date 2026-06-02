@@ -40,7 +40,7 @@ const App = {
       if (modules.cart && modules.cart.initCart) await modules.cart.initCart();
       if (modules.chat && modules.chat.initChat) await modules.chat.initChat();
       if (modules.products && modules.products.initProducts) await modules.products.initProducts();
-      if (modules.product_detail && modules.product_detail.initProductDetail) modules.product_detail.initProductDetail();
+      if (modules['product-detail'] && modules['product-detail'].initProductDetail) modules['product-detail'].initProductDetail();
       if (modules.profile && modules.profile.initProfile) await modules.profile.initProfile();
 
       // Configurar eventos
@@ -107,8 +107,8 @@ const App = {
       if (modules.products && modules.products.getProducts) {
         const products = modules.products.getProducts();
         const product = products?.find(p => p.id == productId);
-        if (product && modules.product_detail && modules.product_detail.openProductDetail) {
-          modules.product_detail.openProductDetail(product);
+        if (product && modules['product-detail'] && modules['product-detail'].openProductDetail) {
+          modules['product-detail'].openProductDetail(productId);
         } else {
           this.showError('Detalhes do produto temporariamente indisponível');
         }
@@ -208,8 +208,39 @@ const App = {
     const viewAllProducts = document.getElementById('view-all-products');
     if (viewAllProducts) viewAllProducts.addEventListener('click', () => this.route('products'));
 
+    const navHome = document.getElementById('nav-home');
+    if (navHome) navHome.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('home');
+      this.setActiveBottomNav('bottom-nav-home');
+    });
+
+    const navProducts = document.getElementById('nav-products');
+    if (navProducts) navProducts.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('products');
+      this.setActiveBottomNav('bottom-nav-home');
+    });
+
+    const navOffers = document.getElementById('nav-offers');
+    if (navOffers) navOffers.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.route('products');
+      this.setActiveBottomNav('bottom-nav-home');
+    });
+
+    const navChat = document.getElementById('nav-chat');
+    if (navChat) navChat.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.openChatModule();
+      this.setActiveBottomNav('bottom-nav-chat');
+    });
+
     const profileBtn = document.getElementById('profile-btn');
-    if (profileBtn) profileBtn.addEventListener('click', () => this.route('profile'));
+    if (profileBtn) profileBtn.addEventListener('click', () => {
+      this.route('profile');
+      this.setActiveBottomNav('bottom-nav-profile');
+    });
 
     const promoChatBtn = document.getElementById('promo-chat-btn');
     if (promoChatBtn) promoChatBtn.addEventListener('click', () => this.openChatModule());
@@ -225,18 +256,27 @@ const App = {
     if (bottomNavChat) bottomNavChat.addEventListener('click', (e) => {
       e.preventDefault();
       this.openChatModule();
+      this.setActiveBottomNav('bottom-nav-chat');
     });
 
     const bottomNavOrders = document.getElementById('bottom-nav-orders');
     if (bottomNavOrders) bottomNavOrders.addEventListener('click', (e) => {
       e.preventDefault();
-      this.route('orders');
+      this.route('cart');
+      this.setActiveBottomNav('bottom-nav-orders');
     });
 
     const bottomNavProfile = document.getElementById('bottom-nav-profile');
     if (bottomNavProfile) bottomNavProfile.addEventListener('click', (e) => {
       e.preventDefault();
       this.route('profile');
+      this.setActiveBottomNav('bottom-nav-profile');
+    });
+  },
+
+  setActiveBottomNav(activeId) {
+    document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(item => {
+      item.classList.toggle('active', item.id === activeId);
     });
   },
 
@@ -261,8 +301,8 @@ const App = {
     const closeCart = document.getElementById('close-cart');
     const cartOverlay = document.getElementById('cart-overlay');
 
-    if (cartBtn && modules.ui && modules.ui.openSidebar) {
-      cartBtn.onclick = () => modules.ui.openSidebar('cart-sidebar');
+    if (cartBtn) {
+      cartBtn.onclick = () => this.route('cart');
     }
     if (closeCart && modules.ui && modules.ui.closeSidebar) {
       closeCart.onclick = () => modules.ui.closeSidebar('cart-sidebar');
@@ -305,19 +345,27 @@ const App = {
           if (modules.products && modules.products.loadProducts) {
             await modules.products.loadProducts();
           }
+          this.setActiveBottomNav('bottom-nav-home');
           break;
         case 'products':
           if (modules.products && modules.products.loadProducts) {
             await modules.products.loadProducts();
           }
+          this.setActiveBottomNav('bottom-nav-home');
           break;
         case 'cart':
           if (modules.ui && modules.ui.openSidebar) {
             modules.ui.openSidebar('cart-sidebar');
           }
+          this.setActiveBottomNav('bottom-nav-orders');
           break;
         case 'profile':
-          this.loadProfile();
+          if (modules.profile && modules.profile.openProfile) {
+            modules.profile.openProfile();
+          } else {
+            this.loadProfile();
+          }
+          this.setActiveBottomNav('bottom-nav-profile');
           break;
         case 'orders':
           this.loadOrders();
@@ -367,6 +415,10 @@ const App = {
       modules.ui.closeSidebar('cart-sidebar');
       modules.ui.closeSidebar('product-detail-sidebar');
     }
+
+    if (modules.profile && modules.profile.closeProfile) {
+      modules.profile.closeProfile();
+    }
   },
 
   exposeGlobalAPI() {
@@ -387,6 +439,7 @@ const App = {
           this.setupCartSync();
         }
       },
+      getProducts: () => modules.products?.getProducts?.() || [],
       openChat: () => this.openChatModule(),
       closeChat: () => {
         if (modules.chat && modules.chat.closeChat) {
