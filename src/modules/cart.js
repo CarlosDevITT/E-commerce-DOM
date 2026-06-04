@@ -19,18 +19,20 @@ export async function initCart() {
 
 function loadCart() {
   try {
-    cartItems = JSON.parse(localStorage.getItem('cart') || '[]') || [];
+    const storage = window.safeStorage;
+    cartItems = JSON.parse(storage.getItem('cart') || '[]') || [];
   } catch (error) {
-    console.warn('Erro ao carregar localStorage do carrinho:', error);
+    console.warn('Erro ao carregar o carrinho:', error);
     cartItems = [];
   }
 }
 
 function persistCart() {
   try {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
+    const storage = window.safeStorage;
+    storage.setItem('cart', JSON.stringify(cartItems));
   } catch (error) {
-    console.warn('Erro ao salvar localStorage do carrinho:', error);
+    console.warn('Erro ao persistir o carrinho:', error);
   }
 }
 

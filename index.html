@@ -19,7 +19,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <link rel="preload" href="./styles/app.css" as="style">
   <link rel="stylesheet" href="./styles/app.css">
 
   <title>DOM - Ecommerce</title>
@@ -72,6 +71,13 @@
           </svg>
           <span class="h-cart-badge" id="cart-count-header">0</span>
         </button>
+
+        <button class="h-icon-btn chat-btn" id="header-chat-btn" aria-label="Chat IA">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v10Z" />
+            <path d="M7 9h10M7 13h5" />
+          </svg>
+        </button>
       </div>
     </div>
   </header>
@@ -108,6 +114,27 @@
       <div class="hero-image">
         <div class="hero-placeholder">
           <img src="assets/logo.jpg" alt="Banner" class="hero-img">
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-carousel-section">
+      <div class="section-head">
+        <div>
+          <span class="section-label">Destaques</span>
+          <h2>Produtos em destaque do Supabase</h2>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-nav-btn carousel-prev" aria-label="Voltar produto">‹</button>
+          <button class="carousel-nav-btn carousel-next" aria-label="Próximo produto">›</button>
+        </div>
+      </div>
+      <div class="carousel-wrapper">
+        <div id="product-carousel" class="product-carousel">
+          <div class="carousel-loading">
+            <div class="spinner"></div>
+            <p>Carregando destaques...</p>
+          </div>
         </div>
       </div>
     </section>
@@ -265,6 +292,7 @@
   </main>
 
   <div id="cart-overlay" class="cart-overlay"></div>
+  <div id="product-detail-overlay" class="cart-overlay"></div>
 
   <aside id="cart-sidebar" class="ecom-cart-sidebar">
     <div class="ecom-cart-head">
@@ -327,6 +355,24 @@
         <i class="fas fa-lock"></i> <span>Carrinho vazio</span>
       </button>
     </div>
+  </aside>
+
+  <aside id="product-detail-sidebar" class="ecom-cart-sidebar" style="width: min(95%, 520px);">
+    <div class="ecom-cart-head">
+      <div class="ecom-cart-head-left">
+        <div class="ecom-cart-logo-wrap">
+          <i class="fas fa-box-open"></i>
+        </div>
+        <div>
+          <p class="ecom-cart-head-label">Detalhes do Produto</p>
+          <p class="ecom-cart-head-store">Conheça mais sobre o item</p>
+        </div>
+      </div>
+      <button id="close-product-detail" class="h-icon-btn cart-close-btn" aria-label="Fechar detalhe do produto">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div id="product-detail-content" class="ecom-cart-scrollable-content"></div>
   </aside>
 
     <div id="profile-sidebar-overlay" class="cart-overlay"></div>

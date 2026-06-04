@@ -23,7 +23,8 @@ export async function initProfile() {
 ───────────────────────────────────────────────────── */
 function loadUserFromStorage() {
   try {
-    const raw = localStorage.getItem('dom_user');
+    const storage = window.safeStorage;
+    const raw = storage.getItem('dom_user');
     if (raw) {
       currentUser     = JSON.parse(raw);
       isAuthenticated = true;
@@ -36,8 +37,9 @@ function loadUserFromStorage() {
 
 function saveUserToStorage() {
   try {
-    if (currentUser) localStorage.setItem('dom_user', JSON.stringify(currentUser));
-    else             localStorage.removeItem('dom_user');
+    const storage = window.safeStorage;
+    if (currentUser) storage.setItem('dom_user', JSON.stringify(currentUser));
+    else             storage.removeItem('dom_user');
   } catch { /* silencioso */ }
 }
 

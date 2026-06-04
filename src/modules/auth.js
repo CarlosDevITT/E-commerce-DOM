@@ -7,7 +7,8 @@ class AuthService {
 
   loadUser() {
     try {
-      const stored = localStorage.getItem('ecommerce-user');
+      const storage = window.safeStorage;
+      const stored = storage.getItem('ecommerce-user');
       return stored ? JSON.parse(stored) : null;
     } catch (e) {
       console.error('Erro ao carregar usuário:', e);
@@ -17,7 +18,8 @@ class AuthService {
 
   saveUser(userData) {
     try {
-      localStorage.setItem('ecommerce-user', JSON.stringify(userData));
+      const storage = window.safeStorage;
+      storage.setItem('ecommerce-user', JSON.stringify(userData));
       this.user = userData;
       return true;
     } catch (e) {
@@ -44,7 +46,12 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('ecommerce-user');
+    try {
+      const storage = window.safeStorage;
+      storage.removeItem('ecommerce-user');
+    } catch (e) {
+      console.warn('Erro ao remover usuário:', e);
+    }
     this.user = null;
     return { success: true };
   }

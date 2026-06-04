@@ -1,6 +1,43 @@
 //  src/app.js — Sistema modular sem MODAL e sem SW corrompendo
 'use strict';
 
+function createSafeStorage() {
+  const memoryStore = {};
+  let enabled = false;
+
+  try {
+    const testKey = '__dom_storage_test__';
+    window.localStorage.setItem(testKey, '1');
+    window.localStorage.removeItem(testKey);
+    enabled = true;
+  } catch (error) {
+    enabled = false;
+    console.debug('💾 Storage: Usando fallback em memória (localStorage bloqueado)');
+  }
+
+  return {
+    enabled,
+    getItem(key) {
+      if (!enabled) return memoryStore[key] ?? null;
+      return window.localStorage.getItem(key);
+    },
+    setItem(key, value) {
+      if (!enabled) { memoryStore[key] = String(value); return; }
+      window.localStorage.setItem(key, String(value));
+    },
+    removeItem(key) {
+      if (!enabled) { delete memoryStore[key]; return; }
+      window.localStorage.removeItem(key);
+    },
+    clear() {
+      if (!enabled) { Object.keys(memoryStore).forEach(k => delete memoryStore[k]); return; }
+      window.localStorage.clear();
+    }
+  };
+}
+
+window.safeStorage = createSafeStorage();
+
 // Importa todos os módulos existentes com tratamento de erro
 let modules = {};
 
@@ -90,8 +127,9 @@ const App = {
       const cartCount = document.getElementById('cart-count-header');
       if (cartCount) {
         try {
-          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-          const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+          const storage = window.safeStorage;
+          const cart = JSON.parse((storage.getItem('cart') || '[]'));
+          const count = Array.isArray(cart) ? cart.reduce((sum, item) => sum + (item.quantity || 1), 0) : 0;
           cartCount.textContent = count;
         } catch(e) {
           cartCount.textContent = '0';
@@ -149,7 +187,8 @@ const App = {
           if (modules.cart && modules.cart.clearCart) {
             modules.cart.clearCart();
           } else {
-            localStorage.setItem('cart', '[]');
+            const storage = window.safeStorage;
+            try { storage.setItem('cart', '[]'); } catch (e) { console.warn('Erro ao limpar carrinho:', e); }
           }
           this.showSuccess('Carrinho limpo!');
           this.setupCartSync();
@@ -241,6 +280,9 @@ const App = {
       this.route('profile');
       this.setActiveBottomNav('bottom-nav-profile');
     });
+
+    const headerChatBtn = document.getElementById('header-chat-btn');
+    if (headerChatBtn) headerChatBtn.addEventListener('click', () => this.openChatModule());
 
     const promoChatBtn = document.getElementById('promo-chat-btn');
     if (promoChatBtn) promoChatBtn.addEventListener('click', () => this.openChatModule());

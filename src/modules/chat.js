@@ -322,9 +322,11 @@ const chatModule = {
       
       .premium-chat-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px);
-        z-index: 9999; display: none; opacity: 0; transition: opacity 0.3s ease;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 9999; display: none; opacity: 0; transition: opacity 0.28s ease;
+        pointer-events: none;
       }
+      .premium-chat-overlay.overlay-visible { opacity: 1; pointer-events: auto; }
       .premium-chat-overlay.overlay-visible { display: block; opacity: 1; }
 
       .premium-chat-sidebar {

@@ -10,6 +10,8 @@ const RENDER_CHUNK_DELAY = 80;
 let pendingRenderHandle = null;
 let pendingRenderState = null;
 let searchTimeout = null;
+let carouselAutoScrollTimer = null;
+let carouselPause = false;
 
 // ── Aguarda o SupabaseManager estar pronto ─────────────────
 async function waitForSupabase(retries = 50) {
@@ -43,17 +45,20 @@ export async function loadProducts() {
     allProducts = data || [];
     currentPage = 0;
     renderProductsChunked(allProducts);
+    renderCarousel(allProducts);
     if (allProducts.length === 0) {
       console.warn('⚠️ Nenhum produto carregado do Supabase');
     }
   } catch (err) {
     console.error('❌ loadProducts:', err);
     try {
-      const cached = localStorage.getItem('products_cache');
+      const storage = window.safeStorage;
+      const cached = storage.getItem('products_cache');
       if (cached) {
         allProducts = JSON.parse(cached);
         currentPage = 0;
         renderProductsChunked(allProducts);
+        renderCarousel(allProducts);
         showError('Usando dados em cache. Verifique sua conexão.');
         return;
       }
@@ -61,6 +66,106 @@ export async function loadProducts() {
       console.error('Erro ao carregar cache:', cacheErr);
     }
     showError('Erro ao carregar produtos. Verifique sua conexão.');
+  }
+}
+
+// ── Renderiza carousel de destaques do Supabase ─────────────────────────
+export function renderCarousel(list) {
+  const carousel = document.getElementById('product-carousel');
+  if (!carousel) return;
+
+  if (!list || list.length === 0) {
+    carousel.innerHTML = `<div class="carousel-loading"><p>Sem produtos disponíveis no momento.</p></div>`;
+    return;
+  }
+
+  const featured = list.slice(0, 8);
+  carousel.innerHTML = '';
+
+  featured.forEach((product) => {
+    const name = product.name || product.nome || 'Produto DOM';
+    const price = Number(product.price ?? product.preco ?? 0).toFixed(2).replace('.', ',');
+    const image = product.image_url || product.imagem_url || product.image || 'https://placehold.co/400x400/1e293b/38bdf8?text=DOM';
+    const id = product.id;
+
+    const card = document.createElement('article');
+    card.className = 'carousel-card';
+    card.innerHTML = `
+      <img src="${image}" alt="${name}" loading="lazy">
+      <div class="carousel-card-body">
+        <p class="carousel-card-meta">Lançamento exclusivo</p>
+        <h3 class="carousel-card-name">${name}</h3>
+        <span class="carousel-card-price">R$ ${price}</span>
+        <div class="carousel-card-actions">
+          <button type="button" class="carousel-view-btn" data-id="${id}">Ver detalhes</button>
+          <button type="button" class="add-cart-btn" data-id="${id}" data-name="${name}" data-price="${product.price ?? product.preco ?? 0}" data-image="${image}">Adicionar</button>
+        </div>
+      </div>
+    `;
+    carousel.appendChild(card);
+  });
+
+  startCarouselAutoScroll();
+}
+
+function startCarouselAutoScroll() {
+  const carousel = document.getElementById('product-carousel');
+  if (!carousel) return;
+  stopCarouselAutoScroll();
+
+  carouselAutoScrollTimer = window.setInterval(() => {
+    if (carouselPause) return;
+    const card = carousel.querySelector('.carousel-card');
+    const offset = ((card ? card.offsetWidth : 280) + 18) * 1;
+    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+
+    if (carousel.scrollLeft + offset >= maxScroll - 5) {
+      carousel.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      carousel.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+  }, 3200);
+}
+
+function stopCarouselAutoScroll() {
+  if (carouselAutoScrollTimer) {
+    clearInterval(carouselAutoScrollTimer);
+    carouselAutoScrollTimer = null;
+  }
+}
+
+function scrollCarousel(direction) {
+  const carousel = document.getElementById('product-carousel');
+  if (!carousel) return;
+  const card = carousel.querySelector('.carousel-card');
+  const offset = (card ? card.offsetWidth : 280) + 18;
+  carousel.scrollBy({ left: direction * offset, behavior: 'smooth' });
+}
+
+function attachCarouselControls() {
+  const carousel = document.getElementById('product-carousel');
+
+  document.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.closest('.carousel-prev')) {
+      scrollCarousel(-1);
+      startCarouselAutoScroll();
+    }
+    if (target.closest('.carousel-next')) {
+      scrollCarousel(1);
+      startCarouselAutoScroll();
+    }
+    if (target.classList.contains('carousel-view-btn')) {
+      const productId = target.dataset.id;
+      if (productId && typeof window.showProductDetails === 'function') {
+        window.showProductDetails(productId);
+      }
+    }
+  });
+
+  if (carousel) {
+    carousel.addEventListener('mouseenter', () => { carouselPause = true; });
+    carousel.addEventListener('mouseleave', () => { carouselPause = false; });
   }
 }
 
@@ -147,10 +252,11 @@ function processRenderChunks(deadline) {
 
 function cacheProducts(list) {
   try {
+    const storage = window.safeStorage;
     if (list.length <= MAX_CACHE_PRODUCTS) {
-      localStorage.setItem('products_cache', JSON.stringify(list));
+      storage.setItem('products_cache', JSON.stringify(list));
     } else {
-      localStorage.removeItem('products_cache');
+      storage.removeItem('products_cache');
     }
   } catch (e) {
     console.warn('Erro ao cachear produtos:', e);
@@ -191,17 +297,30 @@ function renderPageChunk(list, container, pageIndex) {
     priceEl.className = 'product-card-price';
     priceEl.textContent = 'R$ ' + price;
     
+    const actionsWrapper = document.createElement('div');
+    actionsWrapper.className = 'product-card-actions';
+
+    const viewBtn = document.createElement('button');
+    viewBtn.className = 'view-details-btn';
+    viewBtn.type = 'button';
+    viewBtn.setAttribute('data-id', id);
+    viewBtn.textContent = 'Ver detalhes';
+
     const btn = document.createElement('button');
     btn.className = 'add-cart-btn';
+    btn.type = 'button';
     btn.setAttribute('data-id', id);
     btn.setAttribute('data-name', name);
     btn.setAttribute('data-price', p.price ?? p.preco ?? 0);
     btn.setAttribute('data-image', image);
     btn.textContent = 'Adicionar';
     
+    actionsWrapper.appendChild(viewBtn);
+    actionsWrapper.appendChild(btn);
+    
     body.appendChild(titleEl);
     body.appendChild(priceEl);
-    body.appendChild(btn);
+    body.appendChild(actionsWrapper);
     card.appendChild(img);
     card.appendChild(body);
     fragment.appendChild(card);
@@ -275,8 +394,18 @@ export async function initProducts() {
           image_url: productImage
         });
       }
+      return;
+    }
+
+    if (e.target.classList.contains('view-details-btn')) {
+      const productId = e.target.getAttribute('data-id');
+      if (productId && typeof window.showProductDetails === 'function') {
+        window.showProductDetails(productId);
+      }
     }
   });
+
+  attachCarouselControls();
   
   return true;
 }
